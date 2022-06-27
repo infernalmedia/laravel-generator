@@ -190,4 +190,14 @@ abstract class BaseRepository
 
         return $model->delete();
     }
+
+    /**
+     * Get model records count
+     *
+     * @return ?int
+     */
+    public function count(): ?int
+    {
+        return $this->all()->count();
+    }
 }
