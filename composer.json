@@ -33,6 +33,7 @@
     "php": "^8.0",
     "illuminate/support": "^9.0",
     "illuminate/console": "^9.0",
+    "inertiajs/inertia-laravel": "^0.6.2",
     "laracasts/flash": "^3.2",
     "laravelcollective/html": "^6.3",
     "protonemedia/inertiajs-tables-laravel-query-builder": "dev-main",
