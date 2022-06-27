@@ -11,7 +11,7 @@ class $MODEL_NAME$Repository extends BaseRepository
     /**
      * @var array
      */
-    protected $fieldSearchable = [
+    const FIELD_SEARCHABLE = [
         $FIELDS$
     ];
 
@@ -20,9 +20,9 @@ class $MODEL_NAME$Repository extends BaseRepository
      *
      * @return array
      */
-    public function getFieldsSearchable()
+    public static function getFieldsSearchable()
     {
-        return $this->fieldSearchable;
+        return self::FIELD_SEARCHABLE;
     }
 
     /**
