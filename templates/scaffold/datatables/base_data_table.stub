@@ -1,0 +1,202 @@
+<?php
+
+namespace $NAMESPACE_DATATABLES$;
+
+use Inertia\Inertia;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
+use ProtoneMedia\LaravelQueryBuilderInertiaJs\InertiaTable;
+
+abstract class BaseDataTable
+{
+    protected $defaultPagination = 25;
+
+    abstract protected function getFieldsSearchable(): array;
+
+    abstract protected function getColumnsToShow(): array;
+
+    abstract protected function getSortablesFields(): array;
+
+    abstract protected function getDefaultSorting(): string;
+
+    abstract protected function getModelStringSingular(): string;
+
+    /**
+     * Get default pagination count
+     *
+     * @return integer
+     */
+    protected function getDefaultPagination(): int
+    {
+        return $this->defaultPagination;
+    }
+
+    /**
+     * Get filterable values
+     *
+     * @return array
+     */
+    protected function getFieldsFilterable(): array
+    {
+        return array_merge($this->getFieldsSearchable(), []);
+    }
+
+    /**
+     * Get model fields with translations from language file
+     *
+     * @return array
+     */
+    protected function getAvailableFields(): array
+    {
+        return __("models/{$this->getModelStringPlural()}.fields");
+    }
+
+    /**
+     * Get model CRUD routes
+     *
+     * @return array
+     */
+    protected function getModelRoutes(): array
+    {
+        return [
+            'edit' => "{$this->getModelStringPlural()}.edit",
+            'destroy' => "{$this->getModelStringPlural()}.destroy",
+            'create' => "{$this->getModelStringPlural()}.create"
+        ];
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    protected function getSearchRows(): array
+    {
+        return Arr::only($this->getAvailableFields(), $this->getFieldsSearchable());
+    }
+
+    /**
+     * Get columns to display
+     *
+     * @return array
+     */
+    protected function getColumns(): array
+    {
+        return Arr::only($this->getAvailableFields(), $this->getColumnsToShow());
+    }
+
+    /**
+     * Get sortable columns
+     *
+     * @return array
+     */
+    protected function getSortables(): array
+    {
+        return array_keys(Arr::only($this->getAvailableFields(), $this->getSortablesFields()));
+    }
+
+
+    protected function getModelNamespace(): string
+    {
+        return  $this->convertVariableToModelNamespace($this->getModelStringSingular());
+    }
+
+    /**
+     * Get model string to locale files
+     *
+     * @return string
+     */
+    protected function getModelStringPlural(): string
+    {
+        $model = Str::lower($this->getModelStringSingular());
+
+        return Str::plural($model);
+    }
+
+    /**
+     * Get the search from the query parameters
+     *
+     * @return void
+     */
+    public function search()
+    {
+        return AllowedFilter::callback('global', function ($query, $value) {
+            $query->where(function ($query) use ($value) {
+                $condition = " LIKE '%{$value}%'";
+                $props = Arr::join(
+                    $this->getFieldsSearchable(),
+                    "{$condition} or "
+                );
+                $query->whereRaw($props . $condition);
+            });
+        });
+    }
+
+    /**
+     * Build model query
+     *
+     * @return void
+     */
+    public function getModels()
+    {
+        return QueryBuilder::for($this->getModelNamespace())
+            ->defaultSort($this->getDefaultSorting())
+            ->allowedSorts($this->getSortables())
+            ->allowedFilters(array_merge($this->getFieldsFilterable(), [$this->search()]))
+            ->paginate($this->getDefaultPagination())
+            ->withQueryString();
+    }
+
+    /**
+     * Render the Vue Component
+     *
+     * @param string $view
+     * @param string $component
+     * @return void
+     */
+    public function render(string $view, string $component = 'DefaultTable')
+    {
+        Inertia::setRootView($view);
+        return Inertia::render($component, [
+            'models' => $this->getModels(),
+            'modelRoutes' => $this->getModelRoutes()
+        ])->table($this->setInertiaTable());
+    }
+
+    /**
+     * Configure the Vue table
+     *
+     * @return void
+     */
+    public function setInertiaTable()
+    {
+        return fn (InertiaTable $table) => $table
+            ->addSearchRows($this->getSearchRows())
+            ->addSortables($this->getSortables())
+            ->addColumns($this->getColumns());
+    }
+
+    /**
+     * Convert string variable to Model class
+     *
+     * @param string $modelName
+     * @param array|string $nameSpace
+     * @return string
+     */
+    protected function convertVariableToModelNamespace(string $modelName, $nameSpace = []): string
+    {
+        $modelName = Str::ucfirst($modelName);
+        if (empty($nameSpace) || is_null($nameSpace) || $nameSpace === "") {
+            return '\\App\\Models\\' . $modelName;
+        }
+
+        if (is_array($nameSpace)) {
+            $nameSpace = implode('\\', $nameSpace);
+            return '\\' . $nameSpace . '\\' . $modelName;
+        } elseif (!is_array($nameSpace)) {
+            return '\\' . $nameSpace . '\\' . $modelName;
+        }
+    }
+}

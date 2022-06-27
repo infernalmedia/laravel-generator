@@ -184,7 +184,7 @@ return [
 
         'tests' => true,
 
-        'datatables' => false,
+        'datatables' => true,
 
         'menu' => [
 
