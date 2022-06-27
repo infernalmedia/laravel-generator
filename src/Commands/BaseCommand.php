@@ -30,6 +30,7 @@ use InfyOm\Generator\Generators\Scaffold\ControllerTestGenerator;
 use InfyOm\Generator\Generators\Scaffold\FeatureTestCaseGenerator;
 use InfyOm\Generator\Generators\Scaffold\CrudControllerTraitGenerator;
 use InfyOm\Generator\Generators\Scaffold\JQueryDatatableAssetsGenerator;
+use InfyOm\Generator\Generators\Scaffold\InertiaDatatableAssetsGenerator;
 
 class BaseCommand extends Command
 {
@@ -140,6 +141,9 @@ class BaseCommand extends Command
 
             $baseDataTableGenerator = new BaseDataTableGenerator($this->commandData);
             $baseDataTableGenerator->generate();
+
+            $inertiaDatatableAssetsGenerator = new InertiaDatatableAssetsGenerator($this->commandData);
+            $inertiaDatatableAssetsGenerator->generate();
         }
 
         if (!$this->isSkip('tests') and !$this->isSkip('scaffold_tests')) {
