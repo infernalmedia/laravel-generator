@@ -29,6 +29,7 @@
       "url": "git@github.com:infernalmedia/inertiajs-tables-laravel-query-builder.git"
     }
   ],
+  "require-all": true,
   "require": {
     "php": "^8.0",
     "illuminate/support": "^9.0",
