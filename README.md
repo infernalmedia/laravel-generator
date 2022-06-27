@@ -23,8 +23,13 @@ Add this entry in `composer.json` :
         {
             "type": "vcs",
             "url": "git@github.com:infernalmedia/laravel-generator.git"
-        }
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:infernalmedia/adminlte-templates.git"
+        },
     ],
 ```
+
 
 Then, run `composer require infyomlabs/laravel-generator:dev-laravel9`
