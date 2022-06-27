@@ -87,24 +87,31 @@ class ControllerGenerator extends BaseGenerator
             $templateName .= '_locale';
         }
 
-        $templateData = get_template('scaffold.' . $templateName, 'laravel-generator');
+        $templateFile = get_template('scaffold.' . $templateName, 'laravel-generator');
+        $filteredFields = collect($this->commandData->fields)
+            ->where('inIndex', '=', true)
+            ->pluck('name');
 
-        $templateData = fill_template($this->commandData->dynamicVars, $templateData);
+        $this->commandData->dynamicVars['$DATATABLE_DEFAULT_SORTING$'] = "'" . $filteredFields->first() . "'";
 
-        $templateData = str_replace(
-            '$DATATABLE_COLUMNS$',
-            $this->commandData->fields,
-            $templateData
-        );
-        $this->commandData->fields['$DATATABLE_DEFAULT_SORTING$'] = Arr::first($this->commandData->fields);
-        $path = $this->commandData->config->pathDataTables;
+        $filteredFieldsArrayToString =  $filteredFields->reduce(function ($carry, $value, $key) use ($filteredFields) {
+            if (($key + 1) === $filteredFields->count()) {
+                return $carry .= "'" . $value . "']";
+            }
+            return $carry .= "'" . $value . "', ";
+        }, "[");
 
-        $fileName = $this->commandData->modelName . 'DataTable.php';
+        $this->commandData->dynamicVars['$DATATABLE_COLUMNS$'] =  $filteredFieldsArrayToString;
 
-        FileUtil::createFile($path, $fileName, $templateData);
+        $templateData = fill_template($this->commandData->dynamicVars, $templateFile);
+        $dataTableFilePath = $this->commandData->config->pathDataTables;
+
+        $dataTableFileName = $this->commandData->modelName . 'DataTable.php';
+
+        FileUtil::createFile($dataTableFilePath, $dataTableFileName, $templateData);
 
         $this->commandData->commandComment("\nDataTable created: ");
-        $this->commandData->commandInfo($fileName);
+        $this->commandData->commandInfo($dataTableFileName);
     }
 
     public function rollback()
