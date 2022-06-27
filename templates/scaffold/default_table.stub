@@ -1,0 +1,72 @@
+<template>
+  <Table
+    :filters="queryBuilderProps.filters"
+    :search="queryBuilderProps.search"
+    :columns="queryBuilderProps.columns"
+    :on-update="setQueryBuilder"
+    :translations="queryBuilderProps.translations"
+    :meta="models"
+  >
+    <template #head>
+      <tr>
+        <HeaderCell
+          v-for="column in columns"
+          :key="column.key"
+          :cell="_headerCellData(column.key, column.sortable)"
+          :translations="translations"
+        >
+          {{ column.label }}
+        </HeaderCell>
+        <td></td>
+      </tr>
+    </template>
+
+    <template #body>
+      <tr v-for="model in models.data" :key="model.id">
+        <td
+          v-for="column in columns"
+          :key="column.key"
+          v-show="showColumn(column.key)"
+        >
+          {{ model[column.key] }}
+        </td>
+        <td class="d-flex justify-content-around">
+          <div class="btn-group">
+            <a href="" class="btn btn-secondary btn-sm">
+              <i class="fa fa-edit"></i>
+            </a>
+            <a href="" class="btn btn-danger btn-sm">
+              <i class="fa fa-trash"></i>
+            </a>
+          </div>
+        </td>
+      </tr>
+    </template>
+  </Table>
+</template>
+
+<script>
+import {
+  InteractsWithQueryBuilder,
+  PureCSS,
+} from "@protonemedia/inertiajs-tables-laravel-query-builder";
+
+export default {
+  mixins: [InteractsWithQueryBuilder, Components],
+
+  components: {
+    Table: PureCSS.Table,
+    HeaderCell: PureCSS.HeaderCell,
+  },
+
+  props: {
+    models: Object,
+    modelRoutes: Object,
+  },
+  computed: {
+    columns() {
+      return this.queryBuilderProps.columns;
+    },
+  },
+};
+</script>
