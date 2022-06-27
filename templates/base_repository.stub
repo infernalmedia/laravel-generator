@@ -34,7 +34,7 @@ abstract class BaseRepository
      *
      * @return array
      */
-    abstract public function getFieldsSearchable();
+    abstract public static function getFieldsSearchable();
 
     /**
      * Configure the Model
