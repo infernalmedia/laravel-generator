@@ -15,7 +15,7 @@ class $MODEL_NAME$ControllerTest extends FeatureTestCase
     use ModelTestTrait;
     use RefreshDatabase;
 
-    const BASE_PATH = '/$ROUTE_PREFIX$$MODEL_NAME_PLURAL_CAMEL$';
+    const BASE_PATH = '/$ROUTE_PREFIX$$MODEL_NAME_PLURAL_DASHED$';
     const MODEL_MAIN_PROPERTY_KEY = 'name';
 
     /**
