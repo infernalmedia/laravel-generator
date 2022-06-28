@@ -1,1 +1,1 @@
- mix.js("resources/js/dataTable.js", "js").vue({ version: 3 })
+ mix.js("resources/js/inertiaDataTable.js", "js").vue({ version: 3 })
