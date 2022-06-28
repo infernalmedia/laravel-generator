@@ -34,6 +34,6 @@ class $MODEL_NAME$DataTable extends BaseDataTable
 
     protected function getModelStringSingular(): string
     {
-        return $MODEL_NAME_CAMEL$;
+        return '$MODEL_NAME_CAMEL$';
     }
 }
