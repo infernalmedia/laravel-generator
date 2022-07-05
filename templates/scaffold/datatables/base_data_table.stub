@@ -203,5 +203,5 @@ abstract class BaseDataTable
     protected function getModelBaseRoute():string
     {
         return $this->getModelStringPlural();
-    } 
+    }
 }
