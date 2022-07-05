@@ -61,9 +61,9 @@ abstract class BaseDataTable
     protected function getModelRoutes(): array
     {
         return [
-            'edit' => "{$this->getModelStringPlural()}.edit",
-            'destroy' => "{$this->getModelStringPlural()}.destroy",
-            'create' => "{$this->getModelStringPlural()}.create"
+            'edit' => "{$this->getModelBaseRoute()}.edit",
+            'destroy' => "{$this->getModelBaseRoute()}.destroy",
+            'create' => "{$this->getModelBaseRoute()}.create"
         ];
     }
 
@@ -199,4 +199,9 @@ abstract class BaseDataTable
             return '\\' . $nameSpace . '\\' . $modelName;
         }
     }
+
+    protected function getModelBaseRoute():string
+    {
+        return Str::kebab($this->getModelStringPlural());
+    } 
 }
