@@ -32,4 +32,8 @@ Add this entry in `composer.json` :
 ```
 
 
-Then, run `composer require infyomlabs/laravel-generator:dev-laravel9`
+Then, run `composer require infyomlabs/laravel-generator:dev-inertia-table`
+
+## Installation
+
+You should add the `@routes Blade directive to your main layout (before your application's JavaScript)
