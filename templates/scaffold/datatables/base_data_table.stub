@@ -110,7 +110,7 @@ abstract class BaseDataTable
      */
     protected function getModelStringPlural(): string
     {
-        $model = Str::lower($this->getModelStringSingular());
+        $model = Str::camel($this->getModelStringSingular());
 
         return Str::plural($model);
     }
