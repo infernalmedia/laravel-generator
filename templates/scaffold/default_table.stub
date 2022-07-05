@@ -25,19 +25,25 @@
       <tr v-for="model in models.data" :key="model.id">
         <td
           v-for="column in columns"
-          :key="column.key"
           v-show="showColumn(column.key)"
+          :key="column.key"
         >
           {{ model[column.key] }}
         </td>
         <td class="d-flex justify-content-around">
           <div class="btn-group">
-            <a href="" class="btn btn-secondary btn-sm">
+            <a
+              :href="$route(modelRoutes.edit, model.id)"
+              class="btn btn-secondary btn-sm"
+            >
               <i class="fa fa-edit"></i>
             </a>
-            <a href="" class="btn btn-danger btn-sm">
+            <button
+              class="btn btn-danger btn-sm"
+              @click="deleteModel(model.id)"
+            >
               <i class="fa fa-trash"></i>
-            </a>
+            </button>
           </div>
         </td>
       </tr>
@@ -49,24 +55,47 @@
 import {
   InteractsWithQueryBuilder,
   PureCSS,
-} from "@protonemedia/inertiajs-tables-laravel-query-builder";
+} from '@protonemedia/inertiajs-tables-laravel-query-builder'
 
 export default {
-  mixins: [InteractsWithQueryBuilder, Components],
-
   components: {
     Table: PureCSS.Table,
     HeaderCell: PureCSS.HeaderCell,
   },
+  mixins: [
+    InteractsWithQueryBuilder,
+    // eslint-disable-next-line no-undef
+    Components,
+  ],
 
   props: {
-    models: Object,
-    modelRoutes: Object,
+    models: {
+      type: Object,
+      required: true,
+    },
+    modelRoutes: {
+      type: Object,
+      required: true,
+    },
   },
   computed: {
     columns() {
-      return this.queryBuilderProps.columns;
+      return this.queryBuilderProps.columns
+    },
+    translations() {
+      return this.queryBuilderProps.translations
     },
   },
-};
+  methods: {
+    deleteModel($modelId) {
+      if (confirm(this.translations.are_you_sure)) {
+        try {
+          this.$inertia.delete(this.$route(this.modelRoutes.destroy, $modelId))
+        } catch (error) {
+          console.error(error)
+        }
+      }
+    },
+  },
+}
 </script>
