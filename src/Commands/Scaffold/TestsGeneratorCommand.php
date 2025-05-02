@@ -36,17 +36,17 @@ class TestsGeneratorCommand extends BaseCommand
 
     /**
      * Execute the command.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         parent::handle();
 
         $featureTestCaseGenerator = new FeatureTestCaseGenerator($this->commandData);
         $featureTestCaseGenerator->generate();
+
         $testTraitsGenerator = new TestTraitsGenerator($this->commandData);
         $testTraitsGenerator->generate();
+
         $controllerTestGenerator = new ControllerTestGenerator($this->commandData);
         $controllerTestGenerator->generate();
     }

@@ -47,7 +47,7 @@ class MenuGenerator extends BaseGenerator
         $this->menuTemplate = fill_template($this->commandData->dynamicVars, $this->menuTemplate);
     }
 
-    public function generate()
+    public function generate(): void
     {
         $this->menuContents .= $this->menuTemplate . infy_nl();
         $existingMenuContents = file_get_contents($this->path);
@@ -63,7 +63,7 @@ class MenuGenerator extends BaseGenerator
         $this->commandData->commandComment("\n" . $this->commandData->config->mCamelPlural . ' menu added.');
     }
 
-    public function rollback()
+    public function rollback(): void
     {
         if (Str::contains($this->menuContents, $this->menuTemplate)) {
             file_put_contents($this->path, str_replace($this->menuTemplate, '', $this->menuContents));

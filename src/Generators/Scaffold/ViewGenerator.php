@@ -31,7 +31,7 @@ class ViewGenerator extends BaseGenerator
         $this->templateType = config('infyom.laravel_generator.templates', 'adminlte-templates');
     }
 
-    public function generate()
+    public function generate(): void
     {
         if (!file_exists($this->path)) {
             mkdir($this->path, 0755, true);
@@ -52,7 +52,7 @@ class ViewGenerator extends BaseGenerator
                 $this->generateIndex();
             }
 
-            if (count(array_intersect(['create', 'update'], $viewsToBeGenerated)) > 0) {
+            if (array_intersect(['create', 'update'], $viewsToBeGenerated) !== []) {
                 $this->generateFields();
             }
 
@@ -81,7 +81,7 @@ class ViewGenerator extends BaseGenerator
         $this->commandData->commandComment('Views created: ');
     }
 
-    private function generateTable()
+    private function generateTable(): void
     {
         if ($this->commandData->getAddOn('datatables')) {
             $templateData = $this->generateDataTableBody();
@@ -102,7 +102,7 @@ class ViewGenerator extends BaseGenerator
         return fill_template($this->commandData->dynamicVars, $templateData);
     }
 
-    private function generateDataTableActions()
+    private function generateDataTableActions(): void
     {
         $templateName = 'datatables_actions';
 
@@ -119,7 +119,7 @@ class ViewGenerator extends BaseGenerator
         $this->commandData->commandInfo('datatables_actions.blade.php created');
     }
 
-    private function generateBladeTableBody()
+    private function generateBladeTableBody(): string
     {
         $templateName = 'blade_table_body';
 
@@ -161,7 +161,7 @@ class ViewGenerator extends BaseGenerator
         return str_replace('$FIELD_BODY$', $tableBodyFields, $templateData);
     }
 
-    private function generateJSTableHeaderFields()
+    private function generateJSTableHeaderFields(): string
     {
         $fields = '';
         foreach ($this->commandData->fields as $field) {
@@ -175,7 +175,7 @@ class ViewGenerator extends BaseGenerator
         return $fields;
     }
 
-    private function generateTableHeaderFields()
+    private function generateTableHeaderFields(): string
     {
         $templateName = 'table_header';
 
@@ -225,7 +225,7 @@ class ViewGenerator extends BaseGenerator
         return implode(infy_nl_tab(1, 2), $headerFields);
     }
 
-    private function generateIndex()
+    private function generateIndex(): void
     {
         $templateName = ($this->commandData->jqueryDT()) ? 'js_index' : 'index';
 
@@ -258,7 +258,7 @@ class ViewGenerator extends BaseGenerator
         $this->commandData->commandInfo('index.blade.php created');
     }
 
-    private function generateFields()
+    private function generateFields(): void
     {
         $templateName = 'fields';
 
@@ -290,9 +290,10 @@ class ViewGenerator extends BaseGenerator
                     $sizeText = $validationText;
                 }
 
-                $size = ",'$sizeText' => $sizeInNumber";
+                $size = sprintf(",'%s' => %s", $sizeText, $sizeInNumber);
                 $minMaxRules .= $size;
             }
+
             $this->commandData->addDynamicVariable('$SIZE$', $minMaxRules);
 
             $fieldTemplate = HTMLFieldGenerator::generateHTML($field, $this->templateType, $localized);
@@ -301,8 +302,9 @@ class ViewGenerator extends BaseGenerator
                 $inputArr = explode(',', $field->htmlValues[1]);
                 $columns = '';
                 foreach ($inputArr as $item) {
-                    $columns .= "'$item'" . ',';  //e.g 'email,id,'
+                    $columns .= sprintf("'%s'", $item) . ',';  //e.g 'email,id,'
                 }
+
                 $columns = substr_replace($columns, '', -1); // remove last ,
 
                 $htmlValues = explode(',', $field->htmlValues[0]);
@@ -343,28 +345,27 @@ class ViewGenerator extends BaseGenerator
         $this->commandData->commandInfo('field.blade.php created');
     }
 
-    private function generateViewComposer($tableName, $variableName, $columns, $selectTable, $modelName = null)
+    private function generateViewComposer($tableName, $variableName, $columns, $selectTable, $modelName = null): string
     {
         $templateName = 'scaffold.fields.select';
         if ($this->commandData->isLocalizedTemplates()) {
             $templateName .= '_locale';
         }
+
         $fieldTemplate = get_template($templateName, $this->templateType);
 
         $viewServiceProvider = new ViewServiceProviderGenerator($this->commandData);
         $viewServiceProvider->generate();
         $viewServiceProvider->addViewVariables($tableName . '.fields', $variableName, $columns, $selectTable, $modelName);
 
-        $fieldTemplate = str_replace(
+        return str_replace(
             '$INPUT_ARR$',
             '$' . $variableName,
             $fieldTemplate
         );
-
-        return $fieldTemplate;
     }
 
-    private function generateCreate()
+    private function generateCreate(): void
     {
         $templateName = 'create';
 
@@ -380,7 +381,7 @@ class ViewGenerator extends BaseGenerator
         $this->commandData->commandInfo('create.blade.php created');
     }
 
-    private function generateUpdate()
+    private function generateUpdate(): void
     {
         $templateName = 'edit';
 
@@ -396,12 +397,13 @@ class ViewGenerator extends BaseGenerator
         $this->commandData->commandInfo('edit.blade.php created');
     }
 
-    private function generateShowFields()
+    private function generateShowFields(): void
     {
         $templateName = 'show_field';
         if ($this->commandData->isLocalizedTemplates()) {
             $templateName .= '_locale';
         }
+
         $fieldTemplate = get_template('scaffold.views.' . $templateName, $this->templateType);
 
         $fieldsStr = '';
@@ -410,6 +412,7 @@ class ViewGenerator extends BaseGenerator
             if (!$field->inView) {
                 continue;
             }
+
             $singleFieldStr = str_replace(
                 '$FIELD_NAME_TITLE$',
                 Str::title(str_replace('_', ' ', $field->name)),
@@ -425,7 +428,7 @@ class ViewGenerator extends BaseGenerator
         $this->commandData->commandInfo('show_fields.blade.php created');
     }
 
-    private function generateShow()
+    private function generateShow(): void
     {
         $templateName = 'show';
 
@@ -441,7 +444,7 @@ class ViewGenerator extends BaseGenerator
         $this->commandData->commandInfo('show.blade.php created');
     }
 
-    public function rollback($views = [])
+    public function rollback($views = []): void
     {
         $files = [
             'table.blade.php',

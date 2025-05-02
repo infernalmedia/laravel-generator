@@ -16,11 +16,14 @@ use InfyOm\Generator\Utils\TableFieldsGenerator;
 class CommandData
 {
     public static $COMMAND_TYPE_API = 'api';
+
     public static $COMMAND_TYPE_SCAFFOLD = 'scaffold';
+
     public static $COMMAND_TYPE_API_SCAFFOLD = 'api_scaffold';
 
     /** @var string */
     public $modelName;
+
     public $commandType;
 
     /** @var GeneratorConfig */
@@ -40,10 +43,11 @@ class CommandData
 
     /** @var array */
     public $dynamicVars = [];
+
     public $fieldNamesMapping = [];
 
     /** @var CommandData */
-    protected static $instance = null;
+    protected static $instance;
 
     public static function getInstance()
     {
@@ -61,9 +65,7 @@ class CommandData
     }
 
     /**
-     * @param Command          $commandObj
      * @param string           $commandType
-     * @param TemplatesManager $templatesManager
      */
     public function __construct(Command $commandObj, $commandType, TemplatesManager $templatesManager = null)
     {
@@ -85,27 +87,27 @@ class CommandData
         $this->config = new GeneratorConfig();
     }
 
-    public function commandError($error)
+    public function commandError($error): void
     {
         $this->commandObj->error($error);
     }
 
-    public function commandComment($message)
+    public function commandComment($message): void
     {
         $this->commandObj->comment($message);
     }
 
-    public function commandWarn($warning)
+    public function commandWarn($warning): void
     {
         $this->commandObj->warn($warning);
     }
 
-    public function commandInfo($message)
+    public function commandInfo($message): void
     {
         $this->commandObj->info($message);
     }
 
-    public function initCommandData()
+    public function initCommandData(): void
     {
         $this->config->init($this);
     }
@@ -120,22 +122,22 @@ class CommandData
         return $this->config->getAddOn($option);
     }
 
-    public function setOption($option, $value)
+    public function setOption($option, $value): void
     {
         $this->config->setOption($option, $value);
     }
 
-    public function addDynamicVariable($name, $val)
+    public function addDynamicVariable($name, $val): void
     {
         $this->dynamicVars[$name] = $val;
     }
 
-    public function jqueryDT()
+    public function jqueryDT(): bool
     {
-        return $this->getOption('jqueryDT') ? true : false;
+        return (bool) $this->getOption('jqueryDT');
     }
 
-    public function getFields()
+    public function getFields(): void
     {
         $this->fields = [];
 
@@ -148,7 +150,7 @@ class CommandData
         }
     }
 
-    private function getInputFromConsole()
+    private function getInputFromConsole(): void
     {
         $this->commandInfo('Specify fields for the model (skip id & timestamp fields, we will add it automatically)');
         $this->commandInfo('Read docs carefully to specify field inputs)');
@@ -193,21 +195,18 @@ class CommandData
         }
     }
 
-    private function addPrimaryKey()
+    private function addPrimaryKey(): void
     {
         $primaryKey = new GeneratorField();
-        if ($this->getOption('primary')) {
-            $primaryKey->name = $this->getOption('primary');
-        } else {
-            $primaryKey->name = 'id';
-        }
+        $primaryKey->name = $this->getOption('primary') ?: 'id';
+
         $primaryKey->parseDBType('id');
         $primaryKey->parseOptions('s,f,p,if,ii');
 
         $this->fields[] = $primaryKey;
     }
 
-    private function addTimestamps()
+    private function addTimestamps(): void
     {
         $createdAt = new GeneratorField();
         $createdAt->name = 'created_at';
@@ -222,7 +221,7 @@ class CommandData
         $this->fields[] = $updatedAt;
     }
 
-    private function getInputFromFileOrJson()
+    private function getInputFromFileOrJson(): void
     {
         // fieldsFile option will get high priority than json option if both options are passed
         try {
@@ -289,22 +288,18 @@ class CommandData
                     }
                 }
             }
-        } catch (Exception $e) {
-            $this->commandError($e->getMessage());
+        } catch (Exception $exception) {
+            $this->commandError($exception->getMessage());
             exit;
         }
     }
 
-    private function getInputFromTable()
+    private function getInputFromTable(): void
     {
         $tableName = $this->dynamicVars['$TABLE_NAME$'];
 
         $ignoredFields = $this->getOption('ignoreFields');
-        if (!empty($ignoredFields)) {
-            $ignoredFields = explode(',', trim($ignoredFields));
-        } else {
-            $ignoredFields = [];
-        }
+        $ignoredFields = !empty($ignoredFields) ? explode(',', trim($ignoredFields)) : [];
 
         $tableFieldsGenerator = new TableFieldsGenerator($tableName, $ignoredFields, $this->config->connection);
         $tableFieldsGenerator->prepareFieldsFromTable();
@@ -323,7 +318,7 @@ class CommandData
         return $data;
     }
 
-    public function fireEvent($commandType, $eventType)
+    public function fireEvent($commandType, $eventType): void
     {
         switch ($eventType) {
             case FileUtil::FILE_CREATING:

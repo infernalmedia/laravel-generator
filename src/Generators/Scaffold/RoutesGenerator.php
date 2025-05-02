@@ -29,10 +29,11 @@ class RoutesGenerator
         } else {
             $this->routesTemplate = get_template('scaffold.routes.routes', 'laravel-generator');
         }
+
         $this->routesTemplate = fill_template($this->commandData->dynamicVars, $this->routesTemplate);
     }
 
-    public function generate()
+    public function generate(): void
     {
         $this->routeContents .= "\n\n" . $this->routesTemplate;
         $existingRouteContents = file_get_contents($this->path);
@@ -46,7 +47,7 @@ class RoutesGenerator
         $this->commandData->commandComment("\n" . $this->commandData->config->mCamelPlural . ' routes added.');
     }
 
-    public function rollback()
+    public function rollback(): void
     {
         if (Str::contains($this->routeContents, $this->routesTemplate)) {
             $this->routeContents = str_replace($this->routesTemplate, '', $this->routeContents);

@@ -44,7 +44,7 @@ class SwaggerGenerator
         return self::$swaggerTypes;
     }
 
-    public static function getFieldType($type)
+    public static function getFieldType($type): array
     {
         $fieldType = null;
         $fieldFormat = null;
@@ -110,7 +110,7 @@ class SwaggerGenerator
         return ['fieldType' => $fieldType, 'fieldFormat' => $fieldFormat];
     }
 
-    public static function generateSwagger($fields, $fillables, $variables)
+    public static function generateSwagger($fields, $fillables, $variables): string
     {
         $template = get_template('model_docs.model', 'swagger-generator');
 
@@ -122,18 +122,14 @@ class SwaggerGenerator
 
         $properties = self::preparePropertyFields($propertyTemplate, $fields);
 
-        $templateData = str_replace('$PROPERTIES$', implode(",\n", $properties), $templateData);
-
-        return $templateData;
+        return str_replace('$PROPERTIES$', implode(",\n", $properties), $templateData);
     }
 
     /**
      * @param $template
      * @param $fields
-     *
-     * @return array
      */
-    public static function preparePropertyFields($template, $fields)
+    public static function preparePropertyFields($template, $fields): array
     {
         $templates = [];
 
@@ -146,11 +142,13 @@ class SwaggerGenerator
             if (empty($description)) {
                 $description = $fieldName;
             }
+
             $propertyTemplate = str_replace('$DESCRIPTION$', $description, $propertyTemplate);
             $propertyTemplate = str_replace('$FIELD_TYPE$', $type, $propertyTemplate);
             if (!empty($format)) {
                 $format = ",\n *          format=\"" . $format . '"';
             }
+
             $propertyTemplate = str_replace('$FIELD_FORMAT$', $format, $propertyTemplate);
             $templates[] = $propertyTemplate;
         }

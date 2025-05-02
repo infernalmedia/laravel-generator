@@ -23,7 +23,7 @@ class RepositoryGenerator extends BaseGenerator
         $this->fileName = $this->commandData->modelName . 'Repository.php';
     }
 
-    public function generate()
+    public function generate(): void
     {
         $templateData = get_template('repository', 'laravel-generator');
 
@@ -51,7 +51,7 @@ class RepositoryGenerator extends BaseGenerator
         $this->commandData->commandInfo($this->fileName);
     }
 
-    public function rollback()
+    public function rollback(): void
     {
         if ($this->rollbackFile($this->path, $this->fileName)) {
             $this->commandData->commandComment('Repository file deleted: ' . $this->fileName);

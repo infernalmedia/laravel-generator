@@ -13,15 +13,15 @@ class FactoryGenerator extends BaseGenerator
 {
     /** @var CommandData */
     private $commandData;
+
     /** @var string */
     private $path;
+
     /** @var string */
     private $fileName;
 
     /**
      * FactoryGenerator constructor.
-     *
-     * @param CommandData $commandData
      */
     public function __construct(CommandData $commandData)
     {
@@ -30,7 +30,7 @@ class FactoryGenerator extends BaseGenerator
         $this->fileName = $this->commandData->modelName . 'Factory.php';
     }
 
-    public function generate()
+    public function generate(): void
     {
         $templateData = get_template('factories.model_factory', 'laravel-generator');
 
@@ -47,17 +47,15 @@ class FactoryGenerator extends BaseGenerator
      *
      * @return mixed|string
      */
-    private function fillTemplate($templateData)
+    private function fillTemplate($templateData): string
     {
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
 
-        $templateData = str_replace(
+        return str_replace(
             '$FIELDS$',
             implode(',' . infy_nl_tab(1, 3), $this->generateFields()),
             $templateData
         );
-
-        return $templateData;
     }
 
     /**
@@ -111,7 +109,7 @@ class FactoryGenerator extends BaseGenerator
         return $this->setSoftDeleteFieldToNull($fields);
     }
 
-    public function rollback()
+    public function rollback(): void
     {
         if ($this->rollbackFile($this->path, $this->fileName)) {
             $this->commandData->commandComment('Factory file deleted: ' . $this->fileName);

@@ -8,7 +8,9 @@ class GeneratorFieldRelation
 {
     /** @var string */
     public $type;
+
     public $inputs;
+
     public $relationName;
 
     public static function parseRelation($relationInput)
@@ -17,17 +19,19 @@ class GeneratorFieldRelation
 
         $relation = new self();
         $relation->type = array_shift($inputs);
+
         $modelWithRelation = explode(':', array_shift($inputs)); //e.g ModelName:relationName
         if (count($modelWithRelation) == 2) {
             $relation->relationName = $modelWithRelation[1];
             unset($modelWithRelation[1]);
         }
+
         $relation->inputs = array_merge($modelWithRelation, $inputs);
 
         return $relation;
     }
 
-    public function getRelationFunctionText($relationText = null)
+    public function getRelationFunctionText($relationText = null): string
     {
         $singularRelation = (!empty($this->relationName)) ? $this->relationName : Str::camel($relationText);
         $pluralRelation = (!empty($this->relationName)) ? $this->relationName : Str::camel(Str::plural($relationText));
@@ -51,6 +55,7 @@ class GeneratorFieldRelation
                 } elseif (isset($this->inputs[1])) {
                     $singularRelation = Str::camel(str_replace('_id', '', strtolower($this->inputs[1])));
                 }
+
                 $functionName = $singularRelation;
                 $relation = 'belongsTo';
                 $relationClass = 'BelongsTo';
@@ -83,7 +88,7 @@ class GeneratorFieldRelation
         return '';
     }
 
-    private function generateRelation($functionName, $relation, $relationClass)
+    private function generateRelation($functionName, $relation, $relationClass): string
     {
         $inputs = $this->inputs;
         $modelName = array_shift($inputs);
@@ -95,15 +100,13 @@ class GeneratorFieldRelation
         $template = str_replace('$RELATION$', $relation, $template);
         $template = str_replace('$RELATION_MODEL_NAME$', $modelName, $template);
 
-        if (count($inputs) > 0) {
+        if ($inputs !== []) {
             $inputFields = implode("', '", $inputs);
             $inputFields = ", '" . $inputFields . "'";
         } else {
             $inputFields = '';
         }
 
-        $template = str_replace('$INPUT_FIELDS$', $inputFields, $template);
-
-        return $template;
+        return str_replace('$INPUT_FIELDS$', $inputFields, $template);
     }
 }

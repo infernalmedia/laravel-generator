@@ -22,7 +22,7 @@ class MigrationGenerator extends BaseGenerator
         $this->path = config('infyom.laravel_generator.path.migration', database_path('migrations/'));
     }
 
-    public function generate()
+    public function generate(): void
     {
         $templateData = get_template('migration', 'laravel-generator');
 
@@ -40,7 +40,7 @@ class MigrationGenerator extends BaseGenerator
         $this->commandData->commandInfo($fileName);
     }
 
-    private function generateFields()
+    private function generateFields(): string
     {
         $fields = [];
         $foreignKeys = [];
@@ -53,6 +53,7 @@ class MigrationGenerator extends BaseGenerator
 
                 continue;
             }
+
             if ($field->name == 'updated_at') {
                 $updatedAtField = $field;
 
@@ -71,6 +72,7 @@ class MigrationGenerator extends BaseGenerator
             if ($createdAtField) {
                 $fields[] = $createdAtField->migrationText;
             }
+
             if ($updatedAtField) {
                 $fields[] = $updatedAtField->migrationText;
             }
@@ -83,7 +85,7 @@ class MigrationGenerator extends BaseGenerator
         return implode(infy_nl_tab(1, 3), array_merge($fields, $foreignKeys));
     }
 
-    public function rollback()
+    public function rollback(): void
     {
         $fileName = 'create_' . $this->commandData->config->tableName . '_table.php';
 

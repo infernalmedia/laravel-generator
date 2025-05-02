@@ -24,7 +24,7 @@ class APIResourceGenerator extends BaseGenerator
         $this->fileName = $this->commandData->modelName . 'Resource.php';
     }
 
-    public function generate()
+    public function generate(): void
     {
         $templateData = get_template('api.resource.api_resource', 'laravel-generator');
 
@@ -42,7 +42,10 @@ class APIResourceGenerator extends BaseGenerator
         $this->commandData->commandInfo($this->fileName);
     }
 
-    private function generateResourceFields()
+    /**
+     * @return list<\non-falsy-string>
+     */
+    private function generateResourceFields(): array
     {
         $resourceFields = [];
         foreach ($this->commandData->fields as $field) {
@@ -52,7 +55,7 @@ class APIResourceGenerator extends BaseGenerator
         return $resourceFields;
     }
 
-    public function rollback()
+    public function rollback(): void
     {
         if ($this->rollbackFile($this->path, $this->fileName)) {
             $this->commandData->commandComment('API Resource file deleted: ' . $this->fileName);

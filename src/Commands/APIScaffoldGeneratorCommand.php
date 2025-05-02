@@ -33,10 +33,8 @@ class APIScaffoldGeneratorCommand extends BaseCommand
 
     /**
      * Execute the command.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         parent::handle();
         $this->commandData->fireEvent('api_scaffold', FileUtil::FILE_CREATING);

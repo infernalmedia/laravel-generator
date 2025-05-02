@@ -14,8 +14,6 @@ class ViewServiceProviderGenerator extends BaseGenerator
 
     /**
      * ViewServiceProvider constructor.
-     *
-     * @param CommandData $commandData
      */
     public function __construct(CommandData $commandData)
     {
@@ -25,7 +23,7 @@ class ViewServiceProviderGenerator extends BaseGenerator
     /**
      * Generate ViewServiceProvider.
      */
-    public function generate()
+    public function generate(): void
     {
         $templateData = get_template_file_path('view_service_provider', 'laravel-generator');
 
@@ -36,6 +34,7 @@ class ViewServiceProviderGenerator extends BaseGenerator
         if (File::exists($destination)) {
             return;
         }
+
         File::copy($templateData, $destination);
 
         $this->commandData->commandComment($fileName . ' published');
@@ -49,19 +48,15 @@ class ViewServiceProviderGenerator extends BaseGenerator
      * @param string      $tableName
      * @param string|null $modelName
      */
-    public function addViewVariables($views, $variableName, $columns, $tableName, $modelName = null)
+    public function addViewVariables($views, $variableName, $columns, $tableName, $modelName = null): void
     {
-        if (!empty($modelName)) {
-            $model = $modelName;
-        } else {
-            $model = model_name_from_table_name($tableName);
-        }
+        $model = !empty($modelName) ? $modelName : model_name_from_table_name($tableName);
 
         $this->commandData->addDynamicVariable('$COMPOSER_VIEWS$', $views);
         $this->commandData->addDynamicVariable('$COMPOSER_VIEW_VARIABLE$', $variableName);
         $this->commandData->addDynamicVariable(
             '$COMPOSER_VIEW_VARIABLE_VALUES$',
-            $model . "::pluck($columns)->toArray()"
+            $model . sprintf('::pluck(%s)->toArray()', $columns)
         );
 
         $mainViewContent = $this->addViewComposer();
@@ -72,7 +67,7 @@ class ViewServiceProviderGenerator extends BaseGenerator
         $this->commandData->commandComment('View service provider file updated.');
     }
 
-    public function addViewComposer()
+    public function addViewComposer(): string
     {
         $mainViewContent = file_get_contents($this->commandData->config->pathViewProvider);
         $newViewStatement = get_template('scaffold.view_composer', 'laravel-generator');
@@ -85,17 +80,16 @@ class ViewServiceProviderGenerator extends BaseGenerator
         $lastSeederStatement = $matches[0][$totalMatches - 1];
 
         $replacePosition = strpos($mainViewContent, $lastSeederStatement);
-        $mainViewContent = substr_replace(
+
+        return substr_replace(
             $mainViewContent,
             $newViewStatement,
             $replacePosition + strlen($lastSeederStatement) + 6,
             0
         );
-
-        return $mainViewContent;
     }
 
-    public function addCustomProvider()
+    public function addCustomProvider(): void
     {
         $configFile = base_path() . '/config/app.php';
         $file = file_get_contents($configFile);

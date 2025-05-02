@@ -12,6 +12,7 @@ class GeneratorFileDeleted
     use SerializesModels;
 
     public $type;
+
     public $data;
 
     /**

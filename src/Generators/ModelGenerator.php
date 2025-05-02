@@ -26,13 +26,13 @@ class ModelGenerator extends BaseGenerator
 
     /** @var string */
     private $path;
+
     private $fileName;
+
     private $table;
 
     /**
      * ModelGenerator constructor.
-     *
-     * @param CommandData $commandData
      */
     public function __construct(CommandData $commandData)
     {
@@ -42,7 +42,7 @@ class ModelGenerator extends BaseGenerator
         $this->table = $this->commandData->dynamicVars['$TABLE_NAME$'];
     }
 
-    public function generate()
+    public function generate(): void
     {
         $templateData = get_template('model.model', 'laravel-generator');
 
@@ -70,6 +70,7 @@ class ModelGenerator extends BaseGenerator
             if ($field->isFillable) {
                 $fillables[] = "'" . $field->name . "'";
             }
+
             if ($field->isPrimary) {
                 $primaryKey = $field->name;
             }
@@ -102,9 +103,7 @@ class ModelGenerator extends BaseGenerator
             $templateData
         );
 
-        $templateData = str_replace('$GENERATE_DATE$', date('F j, Y, g:i a T'), $templateData);
-
-        return $templateData;
+        return str_replace('$GENERATE_DATE$', date('F j, Y, g:i a T'), $templateData);
     }
 
     private function fillSoftDeletes($templateData)
@@ -161,7 +160,8 @@ class ModelGenerator extends BaseGenerator
         $fieldsArr = [];
         $count = 1;
         foreach ($this->commandData->relations as $relation) {
-            $field = $relationText = (isset($relation->inputs[0])) ? $relation->inputs[0] : null;
+            $field = $relation->inputs[0] ?? null;
+            $relationText = $relation->inputs[0] ?? null;
             if (in_array($field, $fieldsArr)) {
                 $relationText = $relationText . '_' . $count;
                 $count++;
@@ -176,12 +176,11 @@ class ModelGenerator extends BaseGenerator
                 $fillables .= ' * @property ' . $this->getPHPDocType($field->fieldType) . ' $' . $field->name . PHP_EOL;
             }
         }
+
         $docsTemplate = str_replace('$GENERATE_DATE$', date('F j, Y, g:i a T'), $docsTemplate);
         $docsTemplate = str_replace('$PHPDOC$', $fillables, $docsTemplate);
 
-        $templateData = str_replace('$DOCS$', $docsTemplate, $templateData);
-
-        return $templateData;
+        return str_replace('$DOCS$', $docsTemplate, $templateData);
     }
 
     /**
@@ -201,11 +200,7 @@ class ModelGenerator extends BaseGenerator
             case '1t1':
                 return '\\' . $this->commandData->config->nsModel . '\\' . $relation->inputs[0] . ' $' . Str::camel($relationText);
             case 'mt1':
-                if (isset($relation->inputs[1])) {
-                    $relationName = str_replace('_id', '', strtolower($relation->inputs[1]));
-                } else {
-                    $relationName = $relationText;
-                }
+                $relationName = isset($relation->inputs[1]) ? str_replace('_id', '', strtolower($relation->inputs[1])) : $relationText;
 
                 return '\\' . $this->commandData->config->nsModel . '\\' . $relation->inputs[0] . ' $' . Str::camel($relationName);
             case '1tm':
@@ -232,7 +227,7 @@ class ModelGenerator extends BaseGenerator
 
         $template = str_replace(
             '$REQUIRED_FIELDS$',
-            '"' . implode('"' . ', ' . '"', $this->generateRequiredFields()) . '"',
+            '"' . implode('", "', $this->generateRequiredFields()) . '"',
             $template
         );
 
@@ -242,12 +237,13 @@ class ModelGenerator extends BaseGenerator
 
         $template = str_replace('$PROPERTIES$', implode(",\n", $properties), $template);
 
-        $templateData = str_replace('$DOCS$', $template, $templateData);
-
-        return $templateData;
+        return str_replace('$DOCS$', $template, $templateData);
     }
 
-    private function generateRequiredFields()
+    /**
+     * @return list<mixed>
+     */
+    private function generateRequiredFields(): array
     {
         $requiredFields = [];
 
@@ -272,18 +268,21 @@ class ModelGenerator extends BaseGenerator
         }
 
         if ($this->commandData->getOption('fromTable') && !empty($timestamps)) {
-            list($created_at, $updated_at) = collect($timestamps)->map(function ($field) {
-                return !empty($field) ? "'$field'" : 'null';
+            [$created_at, $updated_at] = collect($timestamps)->map(function ($field) {
+                return !empty($field) ? sprintf("'%s'", $field) : 'null';
             });
 
-            $replace .= infy_nl_tab() . "const CREATED_AT = $created_at;";
-            $replace .= infy_nl_tab() . "const UPDATED_AT = $updated_at;\n";
+            $replace .= infy_nl_tab() . sprintf('const CREATED_AT = %s;', $created_at);
+            $replace .= infy_nl_tab() . "const UPDATED_AT = {$updated_at};\n";
         }
 
         return str_replace('$TIMESTAMPS$', $replace, $templateData);
     }
 
-    private function generateRules()
+    /**
+     * @return list<\non-falsy-string>
+     */
+    private function generateRules(): array
     {
         $dont_require_fields = config('infyom.laravel_generator.options.hidden_fields', [])
                 + config('infyom.laravel_generator.options.excluded_fields', $this->excluded_fields);
@@ -326,7 +325,7 @@ class ModelGenerator extends BaseGenerator
                             $rule[] = 'string';
 
                             // Enforce a maximum string length if possible.
-                            foreach (explode(':', $field->dbInput) as $key => $value) {
+                            foreach (explode(':', $field->dbInput) as $value) {
                                 if (preg_match('/string,(\d+)/', $value, $matches)) {
                                     $rule[] = 'max:' . $matches[1];
                                 }
@@ -352,6 +351,7 @@ class ModelGenerator extends BaseGenerator
                     });
                     $field->validations = implode('|', $rule);
                 }
+
                 $rule = "'" . $field->name . "' => '" . $field->validations . "'";
                 $rules[] = $rule;
             }
@@ -360,7 +360,7 @@ class ModelGenerator extends BaseGenerator
         return $rules;
     }
 
-    public function generateUniqueRules()
+    public function generateUniqueRules(): string
     {
         $tableNameSingular = Str::singular($this->commandData->config->tableName);
         $uniqueRules = '';
@@ -376,7 +376,10 @@ class ModelGenerator extends BaseGenerator
         return $uniqueRules;
     }
 
-    public function generateCasts()
+    /**
+     * @return list<\non-falsy-string>
+     */
+    public function generateCasts(): array
     {
         $casts = [];
 
@@ -444,14 +447,17 @@ class ModelGenerator extends BaseGenerator
         return $casts;
     }
 
-    private function generateRelations()
+    /**
+     * @return list<mixed>
+     */
+    private function generateRelations(): array
     {
         $relations = [];
 
         $count = 1;
         $fieldsArr = [];
         foreach ($this->commandData->relations as $relation) {
-            $field = (isset($relation->inputs[0])) ? $relation->inputs[0] : null;
+            $field = $relation->inputs[0] ?? null;
 
             $relationShipText = $field;
             if (in_array($field, $fieldsArr)) {
@@ -469,7 +475,7 @@ class ModelGenerator extends BaseGenerator
         return $relations;
     }
 
-    public function rollback()
+    public function rollback(): void
     {
         if ($this->rollbackFile($this->path, $this->fileName)) {
             $this->commandData->commandComment('Model file deleted: ' . $this->fileName);

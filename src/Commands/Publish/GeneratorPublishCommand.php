@@ -33,10 +33,8 @@ class GeneratorPublishCommand extends PublishBaseCommand
 
     /**
      * Execute the command.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $this->publishTestCases();
         $this->publishBaseController();
@@ -44,9 +42,11 @@ class GeneratorPublishCommand extends PublishBaseCommand
         if ($repositoryPattern) {
             $this->publishBaseRepository();
         }
+
         if ($this->option('localized')) {
             $this->publishLocaleFiles();
         }
+
         $this->publishTraitsFiles();
     }
 
@@ -54,24 +54,22 @@ class GeneratorPublishCommand extends PublishBaseCommand
      * Replaces dynamic variables of template.
      *
      * @param string $templateData
-     *
-     * @return string
      */
-    private function fillTemplate($templateData)
+    private function fillTemplate($templateData): string
     {
         $apiVersion = config('infyom.laravel_generator.api_version', 'v1');
         $apiPrefix = config('infyom.laravel_generator.api_prefix', 'api');
 
         $templateData = str_replace('$API_VERSION$', $apiVersion, $templateData);
         $templateData = str_replace('$API_PREFIX$', $apiPrefix, $templateData);
+
         $appNamespace = $this->getLaravel()->getNamespace();
         $appNamespace = substr($appNamespace, 0, strlen($appNamespace) - 1);
-        $templateData = str_replace('$NAMESPACE_APP$', $appNamespace, $templateData);
 
-        return $templateData;
+        return str_replace('$NAMESPACE_APP$', $appNamespace, $templateData);
     }
 
-    private function publishTestCases()
+    private function publishTestCases(): void
     {
         $this->publishTestTraits();
 
@@ -94,7 +92,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
         }
     }
 
-    private function publishTestTraits()
+    private function publishTestTraits(): void
     {
         $testsPath = config('infyom.laravel_generator.path.tests', base_path('tests/'));
         $testsNameSpace = config('infyom.laravel_generator.namespace.tests', 'Tests');
@@ -102,22 +100,22 @@ class GeneratorPublishCommand extends PublishBaseCommand
         $updatedAtField = config('infyom.laravel_generator.timestamps.updated_at', 'updated_at');
 
         foreach ($this->testTraits as $stubFileName => $className) {
-            $templateData = get_template("test.{$stubFileName}", 'laravel-generator');
+            $templateData = get_template('test.' . $stubFileName, 'laravel-generator');
             $templateData = str_replace('$NAMESPACE_TESTS$', $testsNameSpace, $templateData);
-            $templateData = str_replace('$TIMESTAMPS$', "['$createdAtField', '$updatedAtField']", $templateData);
+            $templateData = str_replace('$TIMESTAMPS$', sprintf("['%s', '%s']", $createdAtField, $updatedAtField), $templateData);
 
-            $fileName = "{$className}.php";
+            $fileName = $className . '.php';
 
-            if (file_exists("{$testsPath}.{$fileName}") && !$this->confirmOverwrite($fileName)) {
+            if (file_exists(sprintf('%s.%s', $testsPath, $fileName)) && !$this->confirmOverwrite($fileName)) {
                 return;
             }
 
             FileUtil::createFile($testsPath, $fileName, $templateData);
-            $this->info("{$className} test trait created");
+            $this->info($className . ' test trait created');
         }
     }
 
-    private function publishBaseController()
+    private function publishBaseController(): void
     {
         $templateData = get_template('app_base_controller', 'laravel-generator');
 
@@ -136,7 +134,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
         $this->info('AppBaseController created');
     }
 
-    private function publishBaseRepository()
+    private function publishBaseRepository(): void
     {
         $templateData = get_template('base_repository', 'laravel-generator');
 
@@ -157,7 +155,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
         $this->info('BaseRepository created');
     }
 
-    private function publishLocaleFiles()
+    private function publishLocaleFiles(): void
     {
         $localesDir = __DIR__ . '/../../../locale/';
 
@@ -166,7 +164,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
         $this->comment('Locale files published');
     }
 
-    private function publishTraitsFiles()
+    private function publishTraitsFiles(): void
     {
         $traitsDir = __DIR__ . '/../../../traits/';
 
@@ -177,10 +175,8 @@ class GeneratorPublishCommand extends PublishBaseCommand
 
     /**
      * Get the console command options.
-     *
-     * @return array
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return [
             ['localized', null, InputOption::VALUE_NONE, 'Localize files.'],
@@ -189,10 +185,8 @@ class GeneratorPublishCommand extends PublishBaseCommand
 
     /**
      * Get the console command arguments.
-     *
-     * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [];
     }

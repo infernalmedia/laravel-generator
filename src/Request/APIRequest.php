@@ -12,7 +12,6 @@ class APIRequest extends FormRequest
     /**
      * Get the proper failed validation response for the request.
      *
-     * @param array $errors
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */

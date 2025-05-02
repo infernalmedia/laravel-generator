@@ -54,7 +54,7 @@ class BaseCommand extends Command
         $this->composer = app()['composer'];
     }
 
-    public function handle()
+    public function handle(): void
     {
         $this->commandData->modelName = $this->argument('model');
 
@@ -62,7 +62,7 @@ class BaseCommand extends Command
         $this->commandData->getFields();
     }
 
-    public function generateCommonItems()
+    public function generateCommonItems(): void
     {
         if (!$this->commandData->getOption('fromTable') and !$this->isSkip('migration')) {
             $migrationGenerator = new MigrationGenerator($this->commandData);
@@ -92,7 +92,7 @@ class BaseCommand extends Command
         }
     }
 
-    public function generateAPIItems()
+    public function generateAPIItems(): void
     {
         if (!$this->isSkip('requests') and !$this->isSkip('api_requests')) {
             $requestGenerator = new APIRequestGenerator($this->commandData);
@@ -118,13 +118,14 @@ class BaseCommand extends Command
             $apiTestGenerator = new APITestGenerator($this->commandData);
             $apiTestGenerator->generate();
         }
+
         if ($this->commandData->getOption('resources')) {
             $apiResourceGenerator = new APIResourceGenerator($this->commandData);
             $apiResourceGenerator->generate();
         }
     }
 
-    public function generateScaffoldItems()
+    public function generateScaffoldItems(): void
     {
         if (!$this->isSkip('requests') and !$this->isSkip('scaffold_requests')) {
             $requestGenerator = new RequestGenerator($this->commandData);
@@ -174,7 +175,7 @@ class BaseCommand extends Command
         }
     }
 
-    public function performPostActions($runMigration = false)
+    public function performPostActions($runMigration = false): void
     {
         if ($this->commandData->getOption('save')) {
             $this->saveSchemaFile();
@@ -184,7 +185,7 @@ class BaseCommand extends Command
             if ($this->commandData->getOption('forceMigrate')) {
                 $this->runMigration();
             } elseif (!$this->commandData->getOption('fromTable') and !$this->isSkip('migration')) {
-                $requestFromConsole = (php_sapi_name() == 'cli') ? true : false;
+                $requestFromConsole = PHP_SAPI == 'cli';
                 if ($this->commandData->getOption('jsonFromGUI') && $requestFromConsole) {
                     $this->runMigration();
                 } elseif ($requestFromConsole && $this->confirm("\nDo you want to migrate database? [y|N]", false)) {
@@ -221,12 +222,12 @@ class BaseCommand extends Command
         return false;
     }
 
-    public function performPostActionsWithMigration()
+    public function performPostActionsWithMigration(): void
     {
         $this->performPostActions(true);
     }
 
-    private function saveSchemaFile()
+    private function saveSchemaFile(): void
     {
         $fileFields = [];
 
@@ -259,12 +260,13 @@ class BaseCommand extends Command
         if (file_exists($path . $fileName) && !$this->confirmOverwrite($fileName)) {
             return;
         }
+
         FileUtil::createFile($path, $fileName, json_encode($fileFields, JSON_PRETTY_PRINT));
         $this->commandData->commandComment("\nSchema File saved: ");
         $this->commandData->commandInfo($fileName);
     }
 
-    private function saveLocaleFile()
+    private function saveLocaleFile(): void
     {
         $locales = [
             'singular' => $this->commandData->modelName,
@@ -283,6 +285,7 @@ class BaseCommand extends Command
         if (file_exists($path . $fileName) && !$this->confirmOverwrite($fileName)) {
             return;
         }
+
         $content = "<?php\n\nreturn " . var_export($locales, true) . ';' . \PHP_EOL;
         FileUtil::createFile($path, $fileName, $content);
         $this->commandData->commandComment("\nModel Locale File saved: ");

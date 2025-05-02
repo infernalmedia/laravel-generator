@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 class HelpersTest extends TestCase
 {
-    public function test_model_name_from_table_name()
+    public function test_model_name_from_table_name(): void
     {
         $tableNames = ['posts', 'person_addresses', 'personEmails'];
         $modelNames = ['Post', 'PersonAddress', 'PersonEmail'];

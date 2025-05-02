@@ -22,10 +22,8 @@ class PublishTemplateCommand extends PublishBaseCommand
 
     /**
      * Execute the command.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $this->templatesDir = config(
             'infyom.laravel_generator.path.templates_dir',
@@ -72,20 +70,16 @@ class PublishTemplateCommand extends PublishBaseCommand
 
     /**
      * Get the console command options.
-     *
-     * @return array
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return [];
     }
 
     /**
      * Get the console command arguments.
-     *
-     * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [];
     }

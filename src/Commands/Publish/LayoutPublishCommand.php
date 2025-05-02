@@ -24,27 +24,21 @@ class LayoutPublishCommand extends PublishBaseCommand
 
     /**
      * Execute the command.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $this->copyView();
         $this->publishHomeController();
     }
 
-    private function copyView()
+    private function copyView(): void
     {
         $viewsPath = config('infyom.laravel_generator.path.views', resource_path('views/'));
         $templateType = config('infyom.laravel_generator.templates', 'adminlte-templates');
 
         $this->createDirectories($viewsPath);
 
-        if ($this->option('localized')) {
-            $files = $this->getLocaleViews();
-        } else {
-            $files = $this->getViews();
-        }
+        $files = $this->option('localized') ? $this->getLocaleViews() : $this->getViews();
 
         foreach ($files as $stub => $blade) {
             $sourceFile = get_template_file_path('scaffold/' . $stub, $templateType);
@@ -53,7 +47,7 @@ class LayoutPublishCommand extends PublishBaseCommand
         }
     }
 
-    private function createDirectories($viewsPath)
+    private function createDirectories($viewsPath): void
     {
         FileUtil::createDirectoryIfNotExist($viewsPath . 'layouts');
         FileUtil::createDirectoryIfNotExist($viewsPath . 'auth');
@@ -62,7 +56,10 @@ class LayoutPublishCommand extends PublishBaseCommand
         FileUtil::createDirectoryIfNotExist($viewsPath . 'auth/emails');
     }
 
-    private function getViews()
+    /**
+     * @return mixed[]
+     */
+    private function getViews(): array
     {
         $views = [
             'layouts/app'               => 'layouts/app.blade.php',
@@ -90,12 +87,10 @@ class LayoutPublishCommand extends PublishBaseCommand
             ];
         }
 
-        $views = array_merge($views, $verifyView);
-
-        return $views;
+        return array_merge($views, $verifyView);
     }
 
-    private function getLocaleViews()
+    private function getLocaleViews(): array
     {
         return [
             'layouts/app_locale'           => 'layouts/app.blade.php',
@@ -112,7 +107,7 @@ class LayoutPublishCommand extends PublishBaseCommand
         ];
     }
 
-    private function publishHomeController()
+    private function publishHomeController(): void
     {
         $templateData = get_template('home_controller', 'laravel-generator');
 
@@ -135,10 +130,8 @@ class LayoutPublishCommand extends PublishBaseCommand
      * Replaces dynamic variables of template.
      *
      * @param string $templateData
-     *
-     * @return string
      */
-    private function fillTemplate($templateData)
+    private function fillTemplate($templateData): string
     {
         $templateData = str_replace(
             '$NAMESPACE_CONTROLLER$',
@@ -146,21 +139,17 @@ class LayoutPublishCommand extends PublishBaseCommand
             $templateData
         );
 
-        $templateData = str_replace(
+        return str_replace(
             '$NAMESPACE_REQUEST$',
             config('infyom.laravel_generator.namespace.request'),
             $templateData
         );
-
-        return $templateData;
     }
 
     /**
      * Get the console command options.
-     *
-     * @return array
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return [
             ['localized', null, InputOption::VALUE_NONE, 'Localize files.'],
@@ -169,10 +158,8 @@ class LayoutPublishCommand extends PublishBaseCommand
 
     /**
      * Get the console command arguments.
-     *
-     * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [];
     }

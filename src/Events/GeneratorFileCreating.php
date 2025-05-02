@@ -12,6 +12,7 @@ class GeneratorFileCreating
     use SerializesModels;
 
     public $type;
+
     public $data;
 
     /**

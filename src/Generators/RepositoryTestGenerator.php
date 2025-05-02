@@ -23,7 +23,7 @@ class RepositoryTestGenerator extends BaseGenerator
         $this->fileName = $this->commandData->modelName . 'RepositoryTest.php';
     }
 
-    public function generate()
+    public function generate(): void
     {
         $templateData = get_template('test.repository_test', 'laravel-generator');
 
@@ -37,12 +37,10 @@ class RepositoryTestGenerator extends BaseGenerator
 
     private function fillTemplate($templateData)
     {
-        $templateData = fill_template($this->commandData->dynamicVars, $templateData);
-
-        return $templateData;
+        return fill_template($this->commandData->dynamicVars, $templateData);
     }
 
-    public function rollback()
+    public function rollback(): void
     {
         if ($this->rollbackFile($this->path, $this->fileName)) {
             $this->commandData->commandComment('Repository Test file deleted: ' . $this->fileName);

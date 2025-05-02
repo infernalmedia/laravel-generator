@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class GeneratorFieldsInputUtilTest extends TestCase
 {
-    public function testValidateFieldInput()
+    public function testValidateFieldInput(): void
     {
         // invalid, only name, without database type
         $input = 'title';
@@ -22,7 +22,7 @@ class GeneratorFieldsInputUtilTest extends TestCase
         $this->assertTrue($res);
     }
 
-    public function testProcessFieldInput()
+    public function testProcessFieldInput(): void
     {
         // name, db_type and html_type
         $input = 'title string text';
@@ -100,27 +100,27 @@ class GeneratorFieldsInputUtilTest extends TestCase
         $this->assertTrue($res->inView);
     }
 
-    public function testPrepareKeyValueArrayStr()
+    public function testPrepareKeyValueArrayStr(): void
     {
         $arr = ['a' => 'A', 'b' => 'B'];
 
         $res = GeneratorFieldsInputUtil::prepareKeyValueArrayStr($arr);
-        $expected = '[\'A\' => \'a\', \'B\' => \'b\']';
+        $expected = "['A' => 'a', 'B' => 'b']";
 
         $this->assertEquals($expected, $res);
     }
 
-    public function testPrepareValuesArrayStr()
+    public function testPrepareValuesArrayStr(): void
     {
         $arr = ['A', 'B', 'C'];
 
         $res = GeneratorFieldsInputUtil::prepareValuesArrayStr($arr);
-        $expected = '[\'A\', \'B\', \'C\']';
+        $expected = "['A', 'B', 'C']";
 
         $this->assertEquals($expected, $res);
     }
 
-    public function testKeyValueArrFromLabelValueStr()
+    public function testKeyValueArrFromLabelValueStr(): void
     {
         $arr = ['A', 'B', 'C'];
 

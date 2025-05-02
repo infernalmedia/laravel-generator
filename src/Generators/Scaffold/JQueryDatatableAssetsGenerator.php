@@ -30,12 +30,12 @@ class JQueryDatatableAssetsGenerator extends BaseGenerator
         $this->fileName = $this->config->tableName . '.js';
     }
 
-    public function generate()
+    public function generate(): void
     {
         $this->generateJquery();
     }
 
-    public function generateJquery()
+    public function generateJquery(): void
     {
         $templateName = 'jquery';
 
@@ -69,6 +69,7 @@ class JQueryDatatableAssetsGenerator extends BaseGenerator
         if (!file_exists($path)) {
             FileUtil::createDirectoryIfNotExist($path);
         }
+
         file_put_contents($path . $this->fileName, $templateData);
         $this->commandData->commandComment("\n" . $this->config->tableName . ' assets added.');
 

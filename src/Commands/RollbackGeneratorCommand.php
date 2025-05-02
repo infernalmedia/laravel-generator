@@ -30,12 +30,14 @@ class RollbackGeneratorCommand extends Command
      * @var CommandData
      */
     public $commandData;
+
     /**
      * The console command name.
      *
      * @var string
      */
     protected $name = 'infyom:rollback';
+
     /**
      * The console command description.
      *
@@ -60,10 +62,8 @@ class RollbackGeneratorCommand extends Command
 
     /**
      * Execute the command.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $type = $this->argument('type');
         if (!in_array($type, [
@@ -76,7 +76,8 @@ class RollbackGeneratorCommand extends Command
 
         $this->commandData = new CommandData($this, $this->argument('type'));
         $this->commandData->fireEvent($type, FileUtil::FILE_DELETING);
-        $this->commandData->config->mName = $this->commandData->modelName = $this->argument('model');
+        $this->commandData->config->mName = $this->argument('model');
+        $this->commandData->modelName = $this->commandData->config->mName;
 
         $this->commandData->config->init($this->commandData, ['tableName', 'prefix', 'plural', 'views']);
 

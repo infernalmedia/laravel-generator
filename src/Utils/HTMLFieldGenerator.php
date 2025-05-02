@@ -36,11 +36,8 @@ class HTMLFieldGenerator
                 break;
             case 'checkbox':
                 $fieldTemplate = get_template('scaffold.fields.checkbox' . $localized, $templateType);
-                if (count($field->htmlValues) > 0) {
-                    $checkboxValue = $field->htmlValues[0];
-                } else {
-                    $checkboxValue = 1;
-                }
+                $checkboxValue = count($field->htmlValues) > 0 ? $field->htmlValues[0] : 1;
+
                 $fieldTemplate = str_replace('$CHECKBOX_VALUE$', $checkboxValue, $fieldTemplate);
 
                 break;
@@ -56,6 +53,7 @@ class HTMLFieldGenerator
                     $radioButtonTemplate = str_replace('$VALUE$', $value, $radioButtonTemplate);
                     $radioButtons[] = $radioButtonTemplate;
                 }
+
                 $fieldTemplate = str_replace('$RADIO_BUTTONS$', implode("\n", $radioButtons), $fieldTemplate);
 
                 break;

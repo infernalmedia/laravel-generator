@@ -22,10 +22,8 @@ class PublishUserCommand extends PublishBaseCommand
 
     /**
      * Execute the command.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $this->copyViews();
         $this->updateRoutes();
@@ -34,11 +32,12 @@ class PublishUserCommand extends PublishBaseCommand
         if (config('infyom.laravel_generator.options.repository_pattern')) {
             $this->publishUserRepository();
         }
+
         $this->publishCreateUserRequest();
         $this->publishUpdateUserRequest();
     }
 
-    private function copyViews()
+    private function copyViews(): void
     {
         $viewsPath = config('infyom.laravel_generator.path.views', resource_path('views/'));
         $templateType = config('infyom.laravel_generator.templates', 'adminlte-templates');
@@ -54,12 +53,12 @@ class PublishUserCommand extends PublishBaseCommand
         }
     }
 
-    private function createDirectories($dir)
+    private function createDirectories($dir): void
     {
         FileUtil::createDirectoryIfNotExist($dir);
     }
 
-    private function getViews()
+    private function getViews(): array
     {
         return [
             'users/create'      => 'users/create.blade.php',
@@ -72,7 +71,7 @@ class PublishUserCommand extends PublishBaseCommand
         ];
     }
 
-    private function updateRoutes()
+    private function updateRoutes(): void
     {
         $path = config('infyom.laravel_generator.path.routes', base_path('routes/web.php'));
 
@@ -86,7 +85,7 @@ class PublishUserCommand extends PublishBaseCommand
         $this->comment("\nUser route added");
     }
 
-    private function updateMenu()
+    private function updateMenu(): void
     {
         $viewsPath = config('infyom.laravel_generator.path.views', resource_path('views/'));
         $templateType = config('infyom.laravel_generator.templates', 'adminlte-templates');
@@ -99,7 +98,7 @@ class PublishUserCommand extends PublishBaseCommand
         $this->comment("\nUser Menu added");
     }
 
-    private function publishUserController()
+    private function publishUserController(): void
     {
         $templateData = get_template('user/user_controller', 'laravel-generator');
         if (!config('infyom.laravel_generator.options.repository_pattern')) {
@@ -122,7 +121,7 @@ class PublishUserCommand extends PublishBaseCommand
         $this->info('UserController created');
     }
 
-    private function publishUserRepository()
+    private function publishUserRepository(): void
     {
         $templateData = get_template('user/user_repository', 'laravel-generator');
 
@@ -143,7 +142,7 @@ class PublishUserCommand extends PublishBaseCommand
         $this->info('UserRepository created');
     }
 
-    private function publishCreateUserRequest()
+    private function publishCreateUserRequest(): void
     {
         $templateData = get_template('user/create_user_request', 'laravel-generator');
 
@@ -164,7 +163,7 @@ class PublishUserCommand extends PublishBaseCommand
         $this->info('CreateUserRequest created');
     }
 
-    private function publishUpdateUserRequest()
+    private function publishUpdateUserRequest(): void
     {
         $templateData = get_template('user/update_user_request', 'laravel-generator');
 
@@ -186,37 +185,30 @@ class PublishUserCommand extends PublishBaseCommand
      * Replaces dynamic variables of template.
      *
      * @param string $templateData
-     *
-     * @return string
      */
-    private function fillTemplate($templateData)
+    private function fillTemplate($templateData): string
     {
         $templateData = str_replace('$NAMESPACE_CONTROLLER$', config('infyom.laravel_generator.namespace.controller'), $templateData);
 
         $templateData = str_replace('$NAMESPACE_REQUEST$', config('infyom.laravel_generator.namespace.request'), $templateData);
 
         $templateData = str_replace('$NAMESPACE_REPOSITORY$', config('infyom.laravel_generator.namespace.repository'), $templateData);
-        $templateData = str_replace('$NAMESPACE_USER$', config('auth.providers.users.model'), $templateData);
 
-        return $templateData;
+        return str_replace('$NAMESPACE_USER$', config('auth.providers.users.model'), $templateData);
     }
 
     /**
      * Get the console command options.
-     *
-     * @return array
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return [];
     }
 
     /**
      * Get the console command arguments.
-     *
-     * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [];
     }

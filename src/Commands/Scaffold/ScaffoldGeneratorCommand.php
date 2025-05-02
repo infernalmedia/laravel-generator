@@ -34,10 +34,8 @@ class ScaffoldGeneratorCommand extends BaseCommand
 
     /**
      * Execute the command.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         parent::handle();
 

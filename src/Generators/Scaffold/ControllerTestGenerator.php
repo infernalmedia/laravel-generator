@@ -24,7 +24,7 @@ class ControllerTestGenerator extends BaseGenerator
         $this->fileName = $this->commandData->modelName . 'ControllerTest.php';
     }
 
-    public function generate()
+    public function generate(): void
     {
         $templateData = get_template('test.controller_test', 'laravel-generator');
 
@@ -41,7 +41,7 @@ class ControllerTestGenerator extends BaseGenerator
         return fill_template($this->commandData->dynamicVars, $templateData);
     }
 
-    public function rollback()
+    public function rollback(): void
     {
         if ($this->rollbackFile($this->path, $this->fileName)) {
             $this->commandData->commandComment('Controller Test file deleted: ' . $this->fileName);

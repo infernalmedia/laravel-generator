@@ -5,22 +5,25 @@ namespace InfyOm\Generator\Utils;
 class FileUtil
 {
     const FILE_CREATING = 1;
+
     const FILE_CREATED = 2;
+
     const FILE_DELETING = 3;
+
     const FILE_DELETED = 4;
 
-    public static function createFile($path, $fileName, $contents)
+    public static function createFile($path, $fileName, $contents): void
     {
         if (!file_exists($path)) {
             mkdir($path, 0755, true);
         }
 
-        $path = $path . $fileName;
+        $path .= $fileName;
 
         file_put_contents($path, $contents);
     }
 
-    public static function createDirectoryIfNotExist($path, $replace = false)
+    public static function createDirectoryIfNotExist($path, $replace = false): void
     {
         if (file_exists($path) && $replace) {
             rmdir($path);

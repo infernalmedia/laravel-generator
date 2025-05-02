@@ -6,24 +6,17 @@ use InfyOm\Generator\Common\GeneratorField;
 
 class GeneratorFieldsInputUtil
 {
-    public static function validateFieldInput($fieldInputStr)
+    public static function validateFieldInput($fieldInputStr): bool
     {
         $fieldInputs = explode(' ', $fieldInputStr);
-
-        if (count($fieldInputs) < 2) {
-            return false;
-        }
-
-        return true;
+        return count($fieldInputs) >= 2;
     }
 
     /**
      * @param string $fieldInput
      * @param string $validations
-     *
-     * @return GeneratorField
      */
-    public static function processFieldInput($fieldInput, $validations)
+    public static function processFieldInput($fieldInput, $validations): \InfyOm\Generator\Common\GeneratorField
     {
         /*
          * Field Input Format: field_name <space> db_type <space> html_type(optional) <space> options(optional)
@@ -58,46 +51,41 @@ class GeneratorFieldsInputUtil
         return $field;
     }
 
-    public static function prepareKeyValueArrayStr($arr)
+    public static function prepareKeyValueArrayStr($arr): string
     {
         $arrStr = '[';
         foreach ($arr as $key => $item) {
-            $arrStr .= "'$item' => '$key', ";
+            $arrStr .= sprintf("'%s' => '%s', ", $item, $key);
         }
 
         $arrStr = substr($arrStr, 0, strlen($arrStr) - 2);
 
-        $arrStr .= ']';
-
-        return $arrStr;
+        return $arrStr . ']';
     }
 
-    public static function prepareValuesArrayStr($arr)
+    public static function prepareValuesArrayStr($arr): string
     {
         $arrStr = '[';
         foreach ($arr as $item) {
-            $arrStr .= "'$item', ";
+            $arrStr .= sprintf("'%s', ", $item);
         }
 
         $arrStr = substr($arrStr, 0, strlen($arrStr) - 2);
 
-        $arrStr .= ']';
-
-        return $arrStr;
+        return $arrStr . ']';
     }
 
-    public static function prepareKeyValueArrFromLabelValueStr($values)
+    /**
+     * @return string[]
+     */
+    public static function prepareKeyValueArrFromLabelValueStr($values): array
     {
         $arr = [];
 
         foreach ($values as $value) {
             $labelValue = explode(':', $value);
 
-            if (count($labelValue) > 1) {
-                $arr[$labelValue[0]] = $labelValue[1];
-            } else {
-                $arr[$labelValue[0]] = $labelValue[0];
-            }
+            $arr[$labelValue[0]] = count($labelValue) > 1 ? $labelValue[1] : $labelValue[0];
         }
 
         return $arr;

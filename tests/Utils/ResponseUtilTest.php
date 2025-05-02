@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class ResponseUtilTest extends TestCase
 {
-    public function testMakeResponse()
+    public function testMakeResponse(): void
     {
         $message = 'Data Received';
         $data = ['field' => 'value'];
@@ -19,7 +19,7 @@ class ResponseUtilTest extends TestCase
         $this->assertEquals($data, $response['data']);
     }
 
-    public function testMakeError()
+    public function testMakeError(): void
     {
         $message = 'Error Occurred';
 
@@ -30,7 +30,7 @@ class ResponseUtilTest extends TestCase
         $this->assertArrayNotHasKey('data', $response);
     }
 
-    public function testMakeErrorWithGivenData()
+    public function testMakeErrorWithGivenData(): void
     {
         $message = 'Error Occurred';
         $data = ['code' => '404', 'line' => 20];

@@ -7,11 +7,12 @@ use InfyOm\Generator\Commands\BaseCommand;
 
 class PublishBaseCommand extends BaseCommand
 {
-    public function handle()
+    public function handle(): void
     {
+        //
     }
 
-    public function publishFile($sourceFile, $destinationFile, $fileName)
+    public function publishFile($sourceFile, $destinationFile, $fileName): void
     {
         if (file_exists($destinationFile) && !$this->confirmOverwrite($destinationFile)) {
             return;
@@ -48,20 +49,16 @@ class PublishBaseCommand extends BaseCommand
 
     /**
      * Get the console command options.
-     *
-     * @return array
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return [];
     }
 
     /**
      * Get the console command arguments.
-     *
-     * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [];
     }

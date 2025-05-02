@@ -29,13 +29,13 @@ class RequestGenerator extends BaseGenerator
         $this->updateFileName = 'Update' . $this->commandData->modelName . 'Request.php';
     }
 
-    public function generate()
+    public function generate(): void
     {
         $this->generateCreateRequest();
         $this->generateUpdateRequest();
     }
 
-    private function generateCreateRequest()
+    private function generateCreateRequest(): void
     {
         $templateData = get_template('scaffold.request.create_request', 'laravel-generator');
 
@@ -47,7 +47,7 @@ class RequestGenerator extends BaseGenerator
         $this->commandData->commandInfo($this->createFileName);
     }
 
-    private function generateUpdateRequest()
+    private function generateUpdateRequest(): void
     {
         $modelGenerator = new ModelGenerator($this->commandData);
         $rules = $modelGenerator->generateUniqueRules();
@@ -63,7 +63,7 @@ class RequestGenerator extends BaseGenerator
         $this->commandData->commandInfo($this->updateFileName);
     }
 
-    public function rollback()
+    public function rollback(): void
     {
         if ($this->rollbackFile($this->path, $this->createFileName)) {
             $this->commandData->commandComment('Create API Request file deleted: ' . $this->createFileName);

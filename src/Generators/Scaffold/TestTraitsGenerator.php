@@ -30,10 +30,10 @@ class TestTraitsGenerator extends BaseGenerator
         $this->path = config('infyom.laravel_generator.path.tests', base_path('tests/'));
     }
 
-    public function generate()
+    public function generate(): void
     {
         foreach ($this->testTraits as $stubFileName => $className) {
-            $templateData = get_template("test.{$stubFileName}", 'laravel-generator');
+            $templateData = get_template('test.' . $stubFileName, 'laravel-generator');
 
             $templateData = $this->fillTemplate($templateData);
 
@@ -49,17 +49,17 @@ class TestTraitsGenerator extends BaseGenerator
         return fill_template($this->commandData->dynamicVars, $templateData);
     }
 
-    public function rollback()
+    public function rollback(): void
     {
-        foreach ($this->testTraits as $stubFileName => $className) {
+        foreach ($this->testTraits as $className) {
             if ($this->rollbackFile($this->path, $this->getFileName($className))) {
                 $this->commandData->commandComment('Test trait file deleted: ' . $this->getFileName($className));
             }
         }
     }
 
-    private function getFileName(string $className)
+    private function getFileName(string $className): string
     {
-        return "{$className}.php";
+        return $className . '.php';
     }
 }

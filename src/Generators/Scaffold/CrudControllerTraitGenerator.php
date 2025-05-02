@@ -9,6 +9,7 @@ use InfyOm\Generator\Utils\FileUtil;
 class CrudControllerTraitGenerator extends BaseGenerator
 {
     const CLASS_NAME = 'CrudControllerTrait';
+
     const STUB_FILE_NAME = 'crud_controller_trait';
 
     /** @var CommandData */
@@ -23,7 +24,7 @@ class CrudControllerTraitGenerator extends BaseGenerator
         $this->path = config('infyom.laravel_generator.path.traits', (app_path('Traits/')));
     }
 
-    public function generate()
+    public function generate(): void
     {
         $templateData = get_template("scaffold.traits." . self::STUB_FILE_NAME, 'laravel-generator');
 
@@ -40,14 +41,14 @@ class CrudControllerTraitGenerator extends BaseGenerator
         return fill_template($this->commandData->dynamicVars, $templateData);
     }
 
-    public function rollback()
+    public function rollback(): void
     {
         if ($this->rollbackFile($this->path, $this->getFileName())) {
             $this->commandData->commandComment('Trait file deleted: ' . $this->getFileName());
         }
     }
 
-    private function getFileName()
+    private function getFileName(): string
     {
         return self::CLASS_NAME . ".php";
     }

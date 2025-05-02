@@ -25,10 +25,8 @@ class InfyOmGeneratorServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $configPath = __DIR__ . '/../config/laravel_generator.php';
 
@@ -39,10 +37,8 @@ class InfyOmGeneratorServiceProvider extends ServiceProvider
 
     /**
      * Register the application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->singleton('infyom.publish', function ($app) {
             return new GeneratorPublishCommand();

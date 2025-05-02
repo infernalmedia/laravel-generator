@@ -8,10 +8,8 @@ if (!function_exists('infy_tab')) {
      * Generates tab with spaces.
      *
      * @param int $spaces
-     *
-     * @return string
      */
-    function infy_tab($spaces = 4)
+    function infy_tab($spaces = 4): string
     {
         return str_repeat(' ', $spaces);
     }
@@ -23,10 +21,8 @@ if (!function_exists('infy_tabs')) {
      *
      * @param int $tabs
      * @param int $spaces
-     *
-     * @return string
      */
-    function infy_tabs($tabs, $spaces = 4)
+    function infy_tabs($tabs, $spaces = 4): string
     {
         return str_repeat(infy_tab($spaces), $tabs);
     }
@@ -37,10 +33,8 @@ if (!function_exists('infy_nl')) {
      * Generates new line char.
      *
      * @param int $count
-     *
-     * @return string
      */
-    function infy_nl($count = 1)
+    function infy_nl($count = 1): string
     {
         return str_repeat(PHP_EOL, $count);
     }
@@ -52,10 +46,8 @@ if (!function_exists('infy_nls')) {
      *
      * @param int $count
      * @param int $nls
-     *
-     * @return string
      */
-    function infy_nls($count, $nls = 1)
+    function infy_nls($count, $nls = 1): string
     {
         return str_repeat(infy_nl($nls), $count);
     }
@@ -67,10 +59,8 @@ if (!function_exists('infy_nl_tab')) {
      *
      * @param int $lns
      * @param int $tabs
-     *
-     * @return string
      */
-    function infy_nl_tab($lns = 1, $tabs = 1)
+    function infy_nl_tab($lns = 1, $tabs = 1): string
     {
         return infy_nls($lns) . infy_tabs($tabs);
     }
@@ -82,10 +72,8 @@ if (!function_exists('get_template_file_path')) {
      *
      * @param string $templateName
      * @param string $templateType
-     *
-     * @return string
      */
-    function get_template_file_path($templateName, $templateType)
+    function get_template_file_path($templateName, $templateType): string
     {
         $templateName = str_replace('.', '/', $templateName);
 
@@ -109,10 +97,8 @@ if (!function_exists('get_templates_package_path')) {
      * Finds templates package's full path.
      *
      * @param string $templateType
-     *
-     * @return string
      */
-    function get_templates_package_path($templateType)
+    function get_templates_package_path($templateType): string
     {
         if (strpos($templateType, '/') === false) {
             $templateType = base_path('vendor/infyomlabs/') . $templateType;
@@ -232,7 +218,7 @@ if (!function_exists('fill_field_template_locale')) {
     {
         foreach ($variables as $variable => $key) {
             $value = $field->name;
-            $template = str_replace($variable, "@lang('models/$modelName.fields.$value')", $template);
+            $template = str_replace($variable, sprintf("@lang('models/%s.fields.%s')", $modelName, $value), $template);
         }
 
         return $template;

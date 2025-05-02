@@ -15,12 +15,11 @@ class SeederGenerator extends BaseGenerator
 
     /** @var string */
     private $path;
+
     private $fileName;
 
     /**
      * ModelGenerator constructor.
-     *
-     * @param CommandData $commandData
      */
     public function __construct(CommandData $commandData)
     {
@@ -29,7 +28,7 @@ class SeederGenerator extends BaseGenerator
         $this->fileName = $this->commandData->config->mPlural . 'TableSeeder.php';
     }
 
-    public function generate()
+    public function generate(): void
     {
         $templateData = get_template('seeds.model_seeder', 'laravel-generator');
 

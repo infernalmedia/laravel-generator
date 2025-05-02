@@ -24,7 +24,7 @@ class APITestGenerator extends BaseGenerator
         $this->fileName = $this->commandData->modelName . 'ApiTest.php';
     }
 
-    public function generate()
+    public function generate(): void
     {
         $templateData = get_template('api.test.api_test', 'laravel-generator');
 
@@ -36,7 +36,7 @@ class APITestGenerator extends BaseGenerator
         $this->commandData->commandObj->info($this->fileName);
     }
 
-    public function rollback()
+    public function rollback(): void
     {
         if ($this->rollbackFile($this->path, $this->fileName)) {
             $this->commandData->commandComment('API Test file deleted: ' . $this->fileName);

@@ -9,6 +9,7 @@ use InfyOm\Generator\Utils\FileUtil;
 class FeatureTestCaseGenerator extends BaseGenerator
 {
     const CLASS_NAME = 'FeatureTestCase';
+
     const STUB_FILE_NAME = 'feature_test_case';
 
     /** @var CommandData */
@@ -23,7 +24,7 @@ class FeatureTestCaseGenerator extends BaseGenerator
         $this->path = config('infyom.laravel_generator.path.tests', base_path('tests/'));
     }
 
-    public function generate()
+    public function generate(): void
     {
         $templateData = get_template("test." . self::STUB_FILE_NAME, 'laravel-generator');
 
@@ -40,14 +41,14 @@ class FeatureTestCaseGenerator extends BaseGenerator
         return fill_template($this->commandData->dynamicVars, $templateData);
     }
 
-    public function rollback()
+    public function rollback(): void
     {
         if ($this->rollbackFile($this->path, $this->getFileName())) {
             $this->commandData->commandComment('Abstract class for Test classes file deleted: ' . $this->getFileName());
         }
     }
 
-    private function getFileName()
+    private function getFileName(): string
     {
         return self::CLASS_NAME . ".php";
     }

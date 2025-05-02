@@ -24,13 +24,9 @@ class APIControllerGenerator extends BaseGenerator
         $this->fileName = $this->commandData->modelName . 'APIController.php';
     }
 
-    public function generate()
+    public function generate(): void
     {
-        if ($this->commandData->getOption('repositoryPattern')) {
-            $templateName = 'api_controller';
-        } else {
-            $templateName = 'model_api_controller';
-        }
+        $templateName = $this->commandData->getOption('repositoryPattern') ? 'api_controller' : 'model_api_controller';
 
         if ($this->commandData->isLocalizedTemplates()) {
             $templateName .= '_locale';
@@ -40,7 +36,7 @@ class APIControllerGenerator extends BaseGenerator
             $templateName .= '_resource';
         }
 
-        $templateData = get_template("api.controller.$templateName", 'laravel-generator');
+        $templateData = get_template('api.controller.' . $templateName, 'laravel-generator');
 
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
         $templateData = $this->fillDocs($templateData);
@@ -73,7 +69,7 @@ class APIControllerGenerator extends BaseGenerator
         return $templateData;
     }
 
-    public function rollback()
+    public function rollback(): void
     {
         if ($this->rollbackFile($this->path, $this->fileName)) {
             $this->commandData->commandComment('API Controller file deleted: ' . $this->fileName);
