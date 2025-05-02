@@ -31,7 +31,7 @@ class MenuGenerator extends BaseGenerator
             resource_path(
                 'views/'
             )
-        ).$commandData->getAddOn('menu.menu_file');
+        ) . $commandData->getAddOn('menu.menu_file');
         $this->templateType = config('infyom.laravel_generator.templates', 'adminlte-templates');
 
         $this->menuContents = file_get_contents($this->path);
@@ -42,25 +42,25 @@ class MenuGenerator extends BaseGenerator
             $templateName .= '_locale';
         }
 
-        $this->menuTemplate = get_template('scaffold.layouts.'.$templateName, $this->templateType);
+        $this->menuTemplate = get_template('scaffold.layouts.' . $templateName, $this->templateType);
 
         $this->menuTemplate = fill_template($this->commandData->dynamicVars, $this->menuTemplate);
     }
 
     public function generate()
     {
-        $this->menuContents .= $this->menuTemplate.infy_nl();
+        $this->menuContents .= $this->menuTemplate . infy_nl();
         $existingMenuContents = file_get_contents($this->path);
         // adminlte uses <p> tab and coreui+stisla uses <span> tag for menu
-        if (Str::contains($existingMenuContents, '<p>'.$this->commandData->config->mHumanPlural.'</p>') or
-            Str::contains($existingMenuContents, '<span>'.$this->commandData->config->mHumanPlural.'</span>')) {
-            $this->commandData->commandObj->info('Menu '.$this->commandData->config->mHumanPlural.' is already exists, Skipping Adjustment.');
+        if (Str::contains($existingMenuContents, '<p>' . $this->commandData->config->mHumanPlural . '</p>') or
+            Str::contains($existingMenuContents, '<span>' . $this->commandData->config->mHumanPlural . '</span>')) {
+            $this->commandData->commandObj->info('Menu ' . $this->commandData->config->mHumanPlural . ' is already exists, Skipping Adjustment.');
 
             return;
         }
 
         file_put_contents($this->path, $this->menuContents);
-        $this->commandData->commandComment("\n".$this->commandData->config->mCamelPlural.' menu added.');
+        $this->commandData->commandComment("\n" . $this->commandData->config->mCamelPlural . ' menu added.');
     }
 
     public function rollback()

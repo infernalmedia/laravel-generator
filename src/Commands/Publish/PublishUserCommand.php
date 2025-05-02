@@ -43,13 +43,13 @@ class PublishUserCommand extends PublishBaseCommand
         $viewsPath = config('infyom.laravel_generator.path.views', resource_path('views/'));
         $templateType = config('infyom.laravel_generator.templates', 'adminlte-templates');
 
-        $this->createDirectories($viewsPath.'users');
+        $this->createDirectories($viewsPath . 'users');
 
         $files = $this->getViews();
 
         foreach ($files as $stub => $blade) {
-            $sourceFile = get_template_file_path('scaffold/'.$stub, $templateType);
-            $destinationFile = $viewsPath.$blade;
+            $sourceFile = get_template_file_path('scaffold/' . $stub, $templateType);
+            $destinationFile = $viewsPath . $blade;
             $this->publishFile($sourceFile, $destinationFile, $blade);
         }
     }
@@ -80,7 +80,7 @@ class PublishUserCommand extends PublishBaseCommand
 
         $routesTemplate = get_template('routes.user', 'laravel-generator');
 
-        $routeContents .= "\n\n".$routesTemplate;
+        $routeContents .= "\n\n" . $routesTemplate;
 
         file_put_contents($path, $routeContents);
         $this->comment("\nUser route added");
@@ -90,10 +90,10 @@ class PublishUserCommand extends PublishBaseCommand
     {
         $viewsPath = config('infyom.laravel_generator.path.views', resource_path('views/'));
         $templateType = config('infyom.laravel_generator.templates', 'adminlte-templates');
-        $path = $viewsPath.'layouts/menu.blade.php';
+        $path = $viewsPath . 'layouts/menu.blade.php';
         $menuContents = file_get_contents($path);
         $sourceFile = file_get_contents(get_template_file_path('scaffold/users/menu', $templateType));
-        $menuContents .= "\n".$sourceFile;
+        $menuContents .= "\n" . $sourceFile;
 
         file_put_contents($path, $menuContents);
         $this->comment("\nUser Menu added");
@@ -113,7 +113,7 @@ class PublishUserCommand extends PublishBaseCommand
 
         $fileName = 'UserController.php';
 
-        if (file_exists($controllerPath.$fileName) && !$this->confirmOverwrite($fileName)) {
+        if (file_exists($controllerPath . $fileName) && !$this->confirmOverwrite($fileName)) {
             return;
         }
 
@@ -134,7 +134,7 @@ class PublishUserCommand extends PublishBaseCommand
 
         FileUtil::createDirectoryIfNotExist($repositoryPath);
 
-        if (file_exists($repositoryPath.$fileName) && !$this->confirmOverwrite($fileName)) {
+        if (file_exists($repositoryPath . $fileName) && !$this->confirmOverwrite($fileName)) {
             return;
         }
 
@@ -155,7 +155,7 @@ class PublishUserCommand extends PublishBaseCommand
 
         FileUtil::createDirectoryIfNotExist($requestPath);
 
-        if (file_exists($requestPath.$fileName) && !$this->confirmOverwrite($fileName)) {
+        if (file_exists($requestPath . $fileName) && !$this->confirmOverwrite($fileName)) {
             return;
         }
 
@@ -173,7 +173,7 @@ class PublishUserCommand extends PublishBaseCommand
         $requestPath = config('infyom.laravel_generator.path.request', app_path('Http/Requests/'));
 
         $fileName = 'UpdateUserRequest.php';
-        if (file_exists($requestPath.$fileName) && !$this->confirmOverwrite($fileName)) {
+        if (file_exists($requestPath . $fileName) && !$this->confirmOverwrite($fileName)) {
             return;
         }
 

@@ -25,14 +25,14 @@ class CrudControllerTraitGenerator extends BaseGenerator
 
     public function generate()
     {
-            $templateData = get_template("scaffold.traits." . self::STUB_FILE_NAME, 'laravel-generator');
+        $templateData = get_template("scaffold.traits." . self::STUB_FILE_NAME, 'laravel-generator');
 
-            $templateData = $this->fillTemplate($templateData);
+        $templateData = $this->fillTemplate($templateData);
 
-            FileUtil::createFile($this->path, $this->getFileName(), $templateData);
+        FileUtil::createFile($this->path, $this->getFileName(), $templateData);
 
-            $this->commandData->commandObj->comment("\Trait created: ");
-            $this->commandData->commandObj->info($this->getFileName());
+        $this->commandData->commandObj->comment("\Trait created: ");
+        $this->commandData->commandObj->info($this->getFileName());
     }
 
     private function fillTemplate($templateData)

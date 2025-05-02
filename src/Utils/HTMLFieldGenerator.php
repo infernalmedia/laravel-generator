@@ -19,11 +19,12 @@ class HTMLFieldGenerator
             case 'email':
             case 'password':
             case 'number':
-                $fieldTemplate = get_template('scaffold.fields.'.$field->htmlType.$localized, $templateType);
+                $fieldTemplate = get_template('scaffold.fields.' . $field->htmlType . $localized, $templateType);
+
                 break;
             case 'select':
             case 'enum':
-                $fieldTemplate = get_template('scaffold.fields.select'.$localized, $templateType);
+                $fieldTemplate = get_template('scaffold.fields.select' . $localized, $templateType);
                 $radioLabels = GeneratorFieldsInputUtil::prepareKeyValueArrFromLabelValueStr($field->htmlValues);
 
                 $fieldTemplate = str_replace(
@@ -31,19 +32,21 @@ class HTMLFieldGenerator
                     GeneratorFieldsInputUtil::prepareKeyValueArrayStr($radioLabels),
                     $fieldTemplate
                 );
+
                 break;
             case 'checkbox':
-                $fieldTemplate = get_template('scaffold.fields.checkbox'.$localized, $templateType);
+                $fieldTemplate = get_template('scaffold.fields.checkbox' . $localized, $templateType);
                 if (count($field->htmlValues) > 0) {
                     $checkboxValue = $field->htmlValues[0];
                 } else {
                     $checkboxValue = 1;
                 }
                 $fieldTemplate = str_replace('$CHECKBOX_VALUE$', $checkboxValue, $fieldTemplate);
+
                 break;
             case 'radio':
-                $fieldTemplate = get_template('scaffold.fields.radio_group'.$localized, $templateType);
-                $radioTemplate = get_template('scaffold.fields.radio'.$localized, $templateType);
+                $fieldTemplate = get_template('scaffold.fields.radio_group' . $localized, $templateType);
+                $radioTemplate = get_template('scaffold.fields.radio' . $localized, $templateType);
 
                 $radioLabels = GeneratorFieldsInputUtil::prepareKeyValueArrFromLabelValueStr($field->htmlValues);
 
@@ -54,9 +57,11 @@ class HTMLFieldGenerator
                     $radioButtons[] = $radioButtonTemplate;
                 }
                 $fieldTemplate = str_replace('$RADIO_BUTTONS$', implode("\n", $radioButtons), $fieldTemplate);
+
                 break;
             case 'toggle-switch':
-                $fieldTemplate = get_template('scaffold.fields.toggle-switch'.$localized, $templateType);
+                $fieldTemplate = get_template('scaffold.fields.toggle-switch' . $localized, $templateType);
+
                 break;
         }
 

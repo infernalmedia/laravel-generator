@@ -134,7 +134,7 @@ class BaseCommand extends Command
         if (!$this->isSkip('controllers') and !$this->isSkip('scaffold_controller')) {
             $controllerGenerator = new CrudControllerTraitGenerator($this->commandData);
             $controllerGenerator->generate();
-            
+
             $controllerGenerator = new ControllerGenerator($this->commandData);
             $controllerGenerator->generate();
         }

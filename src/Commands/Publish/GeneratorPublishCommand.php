@@ -102,7 +102,6 @@ class GeneratorPublishCommand extends PublishBaseCommand
         $updatedAtField = config('infyom.laravel_generator.timestamps.updated_at', 'updated_at');
 
         foreach ($this->testTraits as $stubFileName => $className) {
-
             $templateData = get_template("test.{$stubFileName}", 'laravel-generator');
             $templateData = str_replace('$NAMESPACE_TESTS$', $testsNameSpace, $templateData);
             $templateData = str_replace('$TIMESTAMPS$', "['$createdAtField', '$updatedAtField']", $templateData);

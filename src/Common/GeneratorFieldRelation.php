@@ -37,11 +37,13 @@ class GeneratorFieldRelation
                 $functionName = $singularRelation;
                 $relation = 'hasOne';
                 $relationClass = 'HasOne';
+
                 break;
             case '1tm':
                 $functionName = $pluralRelation;
                 $relation = 'hasMany';
                 $relationClass = 'HasMany';
+
                 break;
             case 'mt1':
                 if (!empty($this->relationName)) {
@@ -52,21 +54,25 @@ class GeneratorFieldRelation
                 $functionName = $singularRelation;
                 $relation = 'belongsTo';
                 $relationClass = 'BelongsTo';
+
                 break;
             case 'mtm':
                 $functionName = $pluralRelation;
                 $relation = 'belongsToMany';
                 $relationClass = 'BelongsToMany';
+
                 break;
             case 'hmt':
                 $functionName = $pluralRelation;
                 $relation = 'hasManyThrough';
                 $relationClass = 'HasManyThrough';
+
                 break;
             default:
                 $functionName = '';
                 $relation = '';
                 $relationClass = '';
+
                 break;
         }
 
@@ -91,7 +97,7 @@ class GeneratorFieldRelation
 
         if (count($inputs) > 0) {
             $inputFields = implode("', '", $inputs);
-            $inputFields = ", '".$inputFields."'";
+            $inputFields = ", '" . $inputFields . "'";
         } else {
             $inputFields = '';
         }

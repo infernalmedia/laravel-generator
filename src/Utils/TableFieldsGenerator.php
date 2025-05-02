@@ -105,43 +105,56 @@ class TableFieldsGenerator
             switch ($type) {
                 case 'integer':
                     $field = $this->generateIntFieldInput($column, 'integer');
+
                     break;
                 case 'smallint':
                     $field = $this->generateIntFieldInput($column, 'smallInteger');
+
                     break;
                 case 'bigint':
                     $field = $this->generateIntFieldInput($column, 'bigInteger');
+
                     break;
                 case 'boolean':
                     $name = Str::title(str_replace('_', ' ', $column->getName()));
                     $field = $this->generateField($column, 'boolean', 'checkbox,1');
+
                     break;
                 case 'datetime':
                     $field = $this->generateField($column, 'datetime', 'date');
+
                     break;
                 case 'datetimetz':
                     $field = $this->generateField($column, 'dateTimeTz', 'date');
+
                     break;
                 case 'date':
                     $field = $this->generateField($column, 'date', 'date');
+
                     break;
                 case 'time':
                     $field = $this->generateField($column, 'time', 'text');
+
                     break;
                 case 'decimal':
                     $field = $this->generateNumberInput($column, 'decimal');
+
                     break;
                 case 'float':
                     $field = $this->generateNumberInput($column, 'float');
+
                     break;
                 case 'string':
                     $field = $this->generateField($column, 'string', 'text');
+
                     break;
                 case 'text':
                     $field = $this->generateField($column, 'text', 'textarea');
+
                     break;
                 default:
                     $field = $this->generateField($column, 'string', 'text');
+
                     break;
             }
 
@@ -275,7 +288,7 @@ class TableFieldsGenerator
     {
         $field = new GeneratorField();
         $field->name = $column->getName();
-        $field->parseDBType($dbType.','.$column->getPrecision().','.$column->getScale());
+        $field->parseDBType($dbType . ',' . $column->getPrecision() . ',' . $column->getScale());
         $field->htmlType = 'number';
 
         if ($dbType === 'decimal') {
@@ -364,6 +377,7 @@ class TableFieldsGenerator
                 $manyToManyRelation = $this->isManyToMany($tables, $tableName, $modelTable, $modelTableName);
                 if ($manyToManyRelation) {
                     $this->relations[] = $manyToManyRelation;
+
                     continue;
                 }
             }
@@ -372,12 +386,12 @@ class TableFieldsGenerator
             foreach ($foreignKeys as $foreignKey) {
                 // check if foreign key is on the model table for which we are using generator command
                 if ($foreignKey->foreignTable == $modelTableName) {
-
                     // detect if one to one relationship is there
                     $isOneToOne = $this->isOneToOne($primary, $foreignKey, $modelTable->primaryKey);
                     if ($isOneToOne) {
                         $modelName = model_name_from_table_name($tableName);
-                        $this->relations[] = GeneratorFieldRelation::parseRelation('1t1,'.$modelName);
+                        $this->relations[] = GeneratorFieldRelation::parseRelation('1t1,' . $modelName);
+
                         continue;
                     }
 
@@ -386,8 +400,9 @@ class TableFieldsGenerator
                     if ($isOneToMany) {
                         $modelName = model_name_from_table_name($tableName);
                         $this->relations[] = GeneratorFieldRelation::parseRelation(
-                            '1tm,'.$modelName.','.$foreignKey->localField
+                            '1tm,' . $modelName . ',' . $foreignKey->localField
                         );
+
                         continue;
                     }
                 }
@@ -450,6 +465,7 @@ class TableFieldsGenerator
             // then it can not be many to many
             if ($foreignField != $foreignTable->primaryKey) {
                 return false;
+
                 break;
             }
 
@@ -466,7 +482,7 @@ class TableFieldsGenerator
 
         $modelName = model_name_from_table_name($manyToManyTable);
 
-        return GeneratorFieldRelation::parseRelation('mtm,'.$modelName.','.$tableName);
+        return GeneratorFieldRelation::parseRelation('mtm,' . $modelName . ',' . $tableName);
     }
 
     /**
@@ -539,7 +555,7 @@ class TableFieldsGenerator
             if ($foreignField == $tables[$foreignTable]->primaryKey) {
                 $modelName = model_name_from_table_name($foreignTable);
                 $manyToOneRelations[] = GeneratorFieldRelation::parseRelation(
-                    'mt1,'.$modelName.','.$foreignKey->localField
+                    'mt1,' . $modelName . ',' . $foreignKey->localField
                 );
             }
         }

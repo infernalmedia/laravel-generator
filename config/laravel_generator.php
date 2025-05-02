@@ -30,7 +30,7 @@ return [
         'controller'        => app_path('Http/Controllers/'),
 
         'api_controller'    => app_path('Http/Controllers/API/'),
-        
+
         'api_resource'      => app_path('Http/Resources/'),
 
         'traits'            => app_path('Traits/'),

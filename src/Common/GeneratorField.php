@@ -42,8 +42,8 @@ class GeneratorField
     {
         $this->dbInput = $dbInput;
         if (!is_null($column)) {
-            $this->dbInput = ($column->getLength() > 0) ? $this->dbInput.','.$column->getLength() : $this->dbInput;
-            $this->dbInput = (!$column->getNotnull()) ? $this->dbInput.':nullable' : $this->dbInput;
+            $this->dbInput = ($column->getLength() > 0) ? $this->dbInput . ',' . $column->getLength() : $this->dbInput;
+            $this->dbInput = (!$column->getNotnull()) ? $this->dbInput . ':nullable' : $this->dbInput;
         }
         $this->prepareMigrationText();
     }
@@ -113,18 +113,18 @@ class GeneratorField
 
         $fieldTypeParams = explode(',', array_shift($inputsArr));
         $this->fieldType = array_shift($fieldTypeParams);
-        $this->migrationText .= $this->fieldType."('".$this->name."'";
+        $this->migrationText .= $this->fieldType . "('" . $this->name . "'";
 
         if ($this->fieldType == 'enum') {
             $this->migrationText .= ', [';
             foreach ($fieldTypeParams as $param) {
-                $this->migrationText .= "'".$param."',";
+                $this->migrationText .= "'" . $param . "',";
             }
             $this->migrationText = substr($this->migrationText, 0, strlen($this->migrationText) - 1);
             $this->migrationText .= ']';
         } else {
             foreach ($fieldTypeParams as $param) {
-                $this->migrationText .= ', '.$param;
+                $this->migrationText .= ', ' . $param;
             }
         }
 
@@ -136,7 +136,7 @@ class GeneratorField
             if ($functionName == 'foreign') {
                 $foreignTable = array_shift($inputParams);
                 $foreignField = array_shift($inputParams);
-                $this->foreignKeyText .= "\$table->foreign('".$this->name."')->references('".$foreignField."')->on('".$foreignTable."')";
+                $this->foreignKeyText .= "\$table->foreign('" . $this->name . "')->references('" . $foreignField . "')->on('" . $foreignTable . "')";
                 if (count($inputParams)) {
                     $cascade = array_shift($inputParams);
                     if ($cascade == 'cascade') {
@@ -145,7 +145,7 @@ class GeneratorField
                 }
                 $this->foreignKeyText .= ';';
             } else {
-                $this->migrationText .= '->'.$functionName;
+                $this->migrationText .= '->' . $functionName;
                 $this->migrationText .= '(';
                 $this->migrationText .= implode(', ', $inputParams);
                 $this->migrationText .= ')';
@@ -160,14 +160,14 @@ class GeneratorField
         $field = new self();
         $field->name = $fieldInput['name'];
         $field->parseDBType($fieldInput['dbType']);
-        $field->parseHtmlInput(isset($fieldInput['htmlType']) ? $fieldInput['htmlType'] : '');
-        $field->validations = isset($fieldInput['validations']) ? $fieldInput['validations'] : '';
-        $field->isSearchable = isset($fieldInput['searchable']) ? $fieldInput['searchable'] : false;
-        $field->isFillable = isset($fieldInput['fillable']) ? $fieldInput['fillable'] : true;
-        $field->isPrimary = isset($fieldInput['primary']) ? $fieldInput['primary'] : false;
-        $field->inForm = isset($fieldInput['inForm']) ? $fieldInput['inForm'] : true;
-        $field->inIndex = isset($fieldInput['inIndex']) ? $fieldInput['inIndex'] : true;
-        $field->inView = isset($fieldInput['inView']) ? $fieldInput['inView'] : true;
+        $field->parseHtmlInput($fieldInput['htmlType'] ?? '');
+        $field->validations = $fieldInput['validations'] ?? '';
+        $field->isSearchable = $fieldInput['searchable'] ?? false;
+        $field->isFillable = $fieldInput['fillable'] ?? true;
+        $field->isPrimary = $fieldInput['primary'] ?? false;
+        $field->inForm = $fieldInput['inForm'] ?? true;
+        $field->inIndex = $fieldInput['inIndex'] ?? true;
+        $field->inView = $fieldInput['inView'] ?? true;
 
         return $field;
     }

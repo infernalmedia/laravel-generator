@@ -10,13 +10,12 @@ class FeatureTestCaseGenerator extends BaseGenerator
 {
     const CLASS_NAME = 'FeatureTestCase';
     const STUB_FILE_NAME = 'feature_test_case';
-    
+
     /** @var CommandData */
     private $commandData;
 
     /** @var string */
     private $path;
-
 
     public function __construct($commandData)
     {
@@ -26,14 +25,14 @@ class FeatureTestCaseGenerator extends BaseGenerator
 
     public function generate()
     {
-            $templateData = get_template("test." . self::STUB_FILE_NAME, 'laravel-generator');
+        $templateData = get_template("test." . self::STUB_FILE_NAME, 'laravel-generator');
 
-            $templateData = $this->fillTemplate($templateData);
+        $templateData = $this->fillTemplate($templateData);
 
-            FileUtil::createFile($this->path, $this->getFileName(), $templateData);
+        FileUtil::createFile($this->path, $this->getFileName(), $templateData);
 
-            $this->commandData->commandObj->comment("\Abstract class for Test classes created: ");
-            $this->commandData->commandObj->info($this->getFileName());
+        $this->commandData->commandObj->comment("\Abstract class for Test classes created: ");
+        $this->commandData->commandObj->info($this->getFileName());
     }
 
     private function fillTemplate($templateData)

@@ -165,6 +165,7 @@ class CommandData
 
             if (!GeneratorFieldsInputUtil::validateFieldInput($fieldInputStr)) {
                 $this->commandError('Invalid Input. Try again');
+
                 continue;
             }
 
@@ -236,7 +237,7 @@ class CommandData
                         'infyom.laravel_generator.path.schema_files',
                         resource_path('model_schemas/')
                     );
-                    $filePath = $schemaFileDirector.$fieldsFileValue;
+                    $filePath = $schemaFileDirector . $fieldsFileValue;
                 }
 
                 if (!file_exists($filePath)) {
@@ -327,15 +328,19 @@ class CommandData
         switch ($eventType) {
             case FileUtil::FILE_CREATING:
                 event(new GeneratorFileCreating($commandType, $this->prepareEventsData()));
+
                 break;
             case FileUtil::FILE_CREATED:
                 event(new GeneratorFileCreated($commandType, $this->prepareEventsData()));
+
                 break;
             case FileUtil::FILE_DELETING:
                 event(new GeneratorFileDeleting($commandType, $this->prepareEventsData()));
+
                 break;
             case FileUtil::FILE_DELETED:
                 event(new GeneratorFileDeleted($commandType, $this->prepareEventsData()));
+
                 break;
         }
     }

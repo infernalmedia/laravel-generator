@@ -56,6 +56,7 @@ class SwaggerGenerator
             case 'biginteger':
                 $fieldType = 'integer';
                 $fieldFormat = 'int32';
+
                 break;
             case 'double':
             case 'float':
@@ -63,9 +64,11 @@ class SwaggerGenerator
             case 'decimal':
                 $fieldType = 'number';
                 $fieldFormat = 'number';
+
                 break;
             case 'boolean':
                 $fieldType = 'boolean';
+
                 break;
             case 'string':
             case 'char':
@@ -74,27 +77,33 @@ class SwaggerGenerator
             case 'longtext':
             case 'enum':
                 $fieldType = 'string';
+
                 break;
             case 'byte':
                 $fieldType = 'string';
                 $fieldFormat = 'byte';
+
                 break;
             case 'binary':
                 $fieldType = 'string';
                 $fieldFormat = 'binary';
+
                 break;
             case 'password':
                 $fieldType = 'string';
                 $fieldFormat = 'password';
+
                 break;
             case 'date':
                 $fieldType = 'string';
                 $fieldFormat = 'date';
+
                 break;
             case 'datetime':
             case 'timestamp':
                 $fieldType = 'string';
                 $fieldFormat = 'date-time';
+
                 break;
         }
 
@@ -107,7 +116,7 @@ class SwaggerGenerator
 
         $templateData = fill_template($variables, $template);
 
-        $templateData = str_replace('$REQUIRED_FIELDS$', '"'.implode('", "', $fillables).'"', $templateData);
+        $templateData = str_replace('$REQUIRED_FIELDS$', '"' . implode('", "', $fillables) . '"', $templateData);
 
         $propertyTemplate = get_template('model_docs.property', 'swagger-generator');
 
@@ -140,7 +149,7 @@ class SwaggerGenerator
             $propertyTemplate = str_replace('$DESCRIPTION$', $description, $propertyTemplate);
             $propertyTemplate = str_replace('$FIELD_TYPE$', $type, $propertyTemplate);
             if (!empty($format)) {
-                $format = ",\n *          format=\"".$format.'"';
+                $format = ",\n *          format=\"" . $format . '"';
             }
             $propertyTemplate = str_replace('$FIELD_FORMAT$', $format, $propertyTemplate);
             $templates[] = $propertyTemplate;

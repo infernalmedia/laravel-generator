@@ -32,7 +32,7 @@ class MigrationGenerator extends BaseGenerator
 
         $tableName = $this->commandData->dynamicVars['$TABLE_NAME$'];
 
-        $fileName = date('Y_m_d_His').'_'.'create_'.strtolower($tableName).'_table.php';
+        $fileName = date('Y_m_d_His') . '_' . 'create_' . strtolower($tableName) . '_table.php';
 
         FileUtil::createFile($this->path, $fileName, $templateData);
 
@@ -50,12 +50,13 @@ class MigrationGenerator extends BaseGenerator
         foreach ($this->commandData->fields as $field) {
             if ($field->name == 'created_at') {
                 $createdAtField = $field;
+
                 continue;
-            } else {
-                if ($field->name == 'updated_at') {
-                    $updatedAtField = $field;
-                    continue;
-                }
+            }
+            if ($field->name == 'updated_at') {
+                $updatedAtField = $field;
+
+                continue;
             }
 
             $fields[] = $field->migrationText;
@@ -84,7 +85,7 @@ class MigrationGenerator extends BaseGenerator
 
     public function rollback()
     {
-        $fileName = 'create_'.$this->commandData->config->tableName.'_table.php';
+        $fileName = 'create_' . $this->commandData->config->tableName . '_table.php';
 
         /** @var SplFileInfo $allFiles */
         $allFiles = File::allFiles($this->path);
@@ -100,8 +101,9 @@ class MigrationGenerator extends BaseGenerator
         foreach ($files as $file) {
             if (Str::contains($file, $fileName)) {
                 if ($this->rollbackFile($this->path, $file)) {
-                    $this->commandData->commandComment('Migration file deleted: '.$file);
+                    $this->commandData->commandComment('Migration file deleted: ' . $file);
                 }
+
                 break;
             }
         }

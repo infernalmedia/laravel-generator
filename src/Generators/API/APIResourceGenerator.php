@@ -21,7 +21,7 @@ class APIResourceGenerator extends BaseGenerator
     {
         $this->commandData = $commandData;
         $this->path = $commandData->config->pathApiResource;
-        $this->fileName = $this->commandData->modelName.'Resource.php';
+        $this->fileName = $this->commandData->modelName . 'Resource.php';
     }
 
     public function generate()
@@ -32,7 +32,7 @@ class APIResourceGenerator extends BaseGenerator
 
         $templateData = str_replace(
             '$RESOURCE_FIELDS$',
-            implode(','.infy_nl_tab(1, 3), $this->generateResourceFields()),
+            implode(',' . infy_nl_tab(1, 3), $this->generateResourceFields()),
             $templateData
         );
 
@@ -46,7 +46,7 @@ class APIResourceGenerator extends BaseGenerator
     {
         $resourceFields = [];
         foreach ($this->commandData->fields as $field) {
-            $resourceFields[] = "'".$field->name."' => \$this->".$field->name;
+            $resourceFields[] = "'" . $field->name . "' => \$this->" . $field->name;
         }
 
         return $resourceFields;
@@ -55,7 +55,7 @@ class APIResourceGenerator extends BaseGenerator
     public function rollback()
     {
         if ($this->rollbackFile($this->path, $this->fileName)) {
-            $this->commandData->commandComment('API Resource file deleted: '.$this->fileName);
+            $this->commandData->commandComment('API Resource file deleted: ' . $this->fileName);
         }
     }
 }

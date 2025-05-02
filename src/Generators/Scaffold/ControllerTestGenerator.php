@@ -21,7 +21,7 @@ class ControllerTestGenerator extends BaseGenerator
     {
         $this->commandData = $commandData;
         $this->path = config('infyom.laravel_generator.path.controller_tests', base_path('tests/Controllers/'));
-        $this->fileName = $this->commandData->modelName.'ControllerTest.php';
+        $this->fileName = $this->commandData->modelName . 'ControllerTest.php';
     }
 
     public function generate()
@@ -44,7 +44,7 @@ class ControllerTestGenerator extends BaseGenerator
     public function rollback()
     {
         if ($this->rollbackFile($this->path, $this->fileName)) {
-            $this->commandData->commandComment('Controller Test file deleted: '.$this->fileName);
+            $this->commandData->commandComment('Controller Test file deleted: ' . $this->fileName);
         }
     }
 }

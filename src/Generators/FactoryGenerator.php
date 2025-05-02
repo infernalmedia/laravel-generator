@@ -78,21 +78,26 @@ class FactoryGenerator extends BaseGenerator
                 case 'integer':
                 case 'float':
                     $fakerData = 'randomDigitNotNull';
+
                     break;
                 case 'string':
                     $fakerData = 'word';
+
                     break;
                 case 'text':
                     $fakerData = 'text';
+
                     break;
                 case 'datetime':
                 case 'timestamp':
                     $fakerData = "date('Y-m-d H:i:s')";
+
                     break;
                 case 'enum':
                     $fakerData = 'randomElement(' .
                     GeneratorFieldsInputUtil::prepareValuesArrayStr($field->htmlValues) .
                         ')';
+
                     break;
                 default:
                     $fakerData = 'word';
@@ -103,7 +108,6 @@ class FactoryGenerator extends BaseGenerator
             $fields[] = $fieldData;
         }
 
-        
         return $this->setSoftDeleteFieldToNull($fields);
     }
 
@@ -118,7 +122,7 @@ class FactoryGenerator extends BaseGenerator
     {
         $softDeleteColumn = config('infyom.laravel_generator.timestamps.deleted_at', 'deleted_at');
 
-        if(array_key_exists($softDeleteColumn, $fields)){
+        if (array_key_exists($softDeleteColumn, $fields)) {
             $fields[$softDeleteColumn] = null;
         }
 
