@@ -8,33 +8,26 @@ use $NAMESPACE_REPOSITORY$\$MODEL_NAME$Repository;
 use $NAMESPACE_APP$\Http\Controllers\AppBaseController;
 use $NAMESPACE_APP$\Traits\CrudControllerTrait;
 use Illuminate\Http\Request;
-use Response;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+
 
 class $MODEL_NAME$Controller extends AppBaseController
 {
     use CrudControllerTrait;
 
-    const BASE_VIEW_PATH = '$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$';
-    const BASE_ROUTE_PATH = '$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$';
-    const MODEL_LANG_PATH = "models/$MODEL_NAME_PLURAL_CAMEL$";
-    const MODEL_GENDER = "male";
-
-    /** @var  $MODEL_NAME$Repository */
-    private $$MODEL_NAME_CAMEL$Repository;
+    private const string BASE_VIEW_PATH = '$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$';
+    private const string BASE_ROUTE_PATH = '$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$';
+    private const string MODEL_LANG_PATH = "models/$MODEL_NAME_PLURAL_CAMEL$";
+    private const string MODEL_GENDER = "male";
 
     public function __construct(
-        $MODEL_NAME$Repository $$MODEL_NAME_CAMEL$Repo
-    ){
-        $this->$MODEL_NAME_CAMEL$Repository = $$MODEL_NAME_CAMEL$Repo;
+        private $MODEL_NAME$Repository $$MODEL_NAME_CAMEL$Repository
+    ) {
+        //
     }
 
-    /**
-     * Display a listing of the $MODEL_NAME$.
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $$MODEL_NAME_PLURAL_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->$RENDER_TYPE$;
 
@@ -42,23 +35,12 @@ class $MODEL_NAME$Controller extends AppBaseController
             ->with('$MODEL_NAME_PLURAL_CAMEL$', $$MODEL_NAME_PLURAL_CAMEL$);
     }
 
-    /**
-     * Show the form for creating a new $MODEL_NAME$.
-     *
-     * @return Response
-     */
-    public function create()
+    public function create(): View
     {
         return $this->returnView('create');
     }
 
-    /**
-     * Store a newly created $MODEL_NAME$ in storage.
-     *
-     * @param Create$MODEL_NAME$Request $request
-     * @return Response
-     */
-    public function store(Create$MODEL_NAME$Request $request)
+    public function store(Create$MODEL_NAME$Request $request): Redirector|RedirectResponse
     {
         $input = $request->all();
 
@@ -69,13 +51,7 @@ class $MODEL_NAME$Controller extends AppBaseController
         return redirect($this->getRoute('index'));
     }
 
-    /**
-     * Display the specified $MODEL_NAME$.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function show($id)
+    public function show(int $id): View|Redirector|RedirectResponse
     {
         $$MODEL_NAME_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->find($id);
 
@@ -86,13 +62,7 @@ class $MODEL_NAME$Controller extends AppBaseController
         return $this->returnView('show')->with('$MODEL_NAME_CAMEL$', $$MODEL_NAME_CAMEL$);
     }
 
-    /**
-     * Show the form for editing the specified $MODEL_NAME$.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function edit($id)
+    public function edit(int $id): View|Redirector|RedirectResponse
     {
         $$MODEL_NAME_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->find($id);
 
@@ -103,14 +73,7 @@ class $MODEL_NAME$Controller extends AppBaseController
         return $this->returnView('edit')->with('$MODEL_NAME_CAMEL$', $$MODEL_NAME_CAMEL$);
     }
 
-    /**
-     * Update the specified $MODEL_NAME$ in storage.
-     *
-     * @param int $id
-     * @param Update$MODEL_NAME$Request $request
-     * @return Response
-     */
-    public function update($id, Update$MODEL_NAME$Request $request)
+    public function update(int $id, Update$MODEL_NAME$Request $request): Redirector|RedirectResponse
     {
         $$MODEL_NAME_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->find($id);
 
@@ -125,13 +88,7 @@ class $MODEL_NAME$Controller extends AppBaseController
         return redirect($this->getRoute('index'));
     }
 
-    /**
-     * Remove the specified $MODEL_NAME$ from storage.
-     * 
-     * @param int $id
-     * @return Response
-     */
-    public function destroy($id)
+    public function destroy(int $id): Redirector|RedirectResponse
     {
         $$MODEL_NAME_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->find($id);
 
@@ -146,22 +103,22 @@ class $MODEL_NAME$Controller extends AppBaseController
         return redirect($this->getRoute('index'));
     }
 
-    protected function getBaseViewPath()
+    protected function getBaseViewPath(): string
     {
         return self::BASE_VIEW_PATH;
     }
 
-    protected function getBaseRoutePath()
+    protected function getBaseRoutePath(): string
     {
         return self::BASE_ROUTE_PATH;
     }
 
-    protected function getModelLangPath()
+    protected function getModelLangPath(): string
     {
         return self::MODEL_LANG_PATH;
     }
 
-    private function getModelGender()
+    private function getModelGender(): string
     {
         return self::MODEL_GENDER;
     }
