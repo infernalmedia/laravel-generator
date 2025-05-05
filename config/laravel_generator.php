@@ -43,6 +43,8 @@ return [
 
         'tests'             => base_path('tests/'),
 
+        'test_cases'        => base_path('tests/'),
+
         'views'             => resource_path('views/'),
 
         'schema_files'      => resource_path('model_schemas/'),
@@ -96,6 +98,8 @@ return [
         'api_test'          => 'Tests\APIs',
 
         'tests'             => 'Tests',
+
+        'test_cases'        => 'Tests',
     ],
 
     /*
@@ -228,5 +232,9 @@ return [
 
         'doctrine_mappings' => [],
     ],
+
+    'special_classes' => [
+        'test_case' => 'FeatureTestCase',
+    ]
 
 ];

@@ -41,8 +41,10 @@ class TestsGeneratorCommand extends BaseCommand
     {
         parent::handle();
 
-        $featureTestCaseGenerator = new FeatureTestCaseGenerator($this->commandData);
-        $featureTestCaseGenerator->generate();
+        if (config('laravel_generator.special_classes.test_case') == 'FeatureTestCase') {
+            $featureTestCaseGenerator = new FeatureTestCaseGenerator($this->commandData);
+            $featureTestCaseGenerator->generate();
+        }
 
         $testTraitsGenerator = new TestTraitsGenerator($this->commandData);
         $testTraitsGenerator->generate();

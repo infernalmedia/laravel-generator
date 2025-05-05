@@ -45,6 +45,8 @@ class GeneratorConfig
 
     public $nsTests;
 
+    public $nsTestCases;
+
     public $controllerTests;
 
     /* Path variables */
@@ -147,6 +149,8 @@ class GeneratorConfig
         'jqueryDT',
     ];
 
+    public $scTestCase;
+
     public $tableName;
 
     /** @var string */
@@ -220,7 +224,8 @@ class GeneratorConfig
         $this->nsApiTests = config('infyom.laravel_generator.namespace.api_test', 'Tests\APIs');
         $this->nsRepositoryTests = config('infyom.laravel_generator.namespace.repository_test', 'Tests\Repositories');
         $this->nsTests = config('infyom.laravel_generator.namespace.tests', 'Tests');
-
+        $this->nsTestCases = config('infyom.laravel_generator.namespace.test_cases', 'Tests');
+        $this->scTestCase = config('infyom.laravel_generator.special_classes.test_case', 'FeatureTestCase');
         $this->controllerTests = config('infyom.laravel_generator.namespace.controller_tests', 'Tests\Controllers');
     }
 
@@ -327,6 +332,8 @@ class GeneratorConfig
         $commandData->addDynamicVariable('$NAMESPACE_API_TESTS$', $this->nsApiTests);
         $commandData->addDynamicVariable('$NAMESPACE_REPOSITORIES_TESTS$', $this->nsRepositoryTests);
         $commandData->addDynamicVariable('$NAMESPACE_TESTS$', $this->nsTests);
+        $commandData->addDynamicVariable('$NAMESPACE_TEST_CASES$', $this->nsTestCases);
+        $commandData->addDynamicVariable('$CLASS_TEST_CASE$', $this->scTestCase);
 
         $commandData->addDynamicVariable('$NAMESPACE_CONTROLLERS_TESTS$', $this->controllerTests);
 

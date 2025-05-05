@@ -7,10 +7,10 @@ use $NAMESPACE_MODEL$\$MODEL_NAME$;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Model;
-use $NAMESPACE_TESTS$\FeatureTestCase;
+use $NAMESPACE_TEST_CASES$\$CLASS_TEST_CASE$;
 use $NAMESPACE_TESTS$\ModelTestTrait;
 
-class $MODEL_NAME$ControllerTest extends FeatureTestCase
+class $MODEL_NAME$ControllerTest extends $CLASS_TEST_CASE$
 {
     use ModelTestTrait;
     use RefreshDatabase;

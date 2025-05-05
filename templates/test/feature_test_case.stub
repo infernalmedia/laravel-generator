@@ -1,12 +1,12 @@
 <?php
 
-namespace $NAMESPACE_TESTS$;
+namespace $NAMESPACE_TEST_CASES$;
 
 use Exception;
 use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
 use Illuminate\Support\Facades\Route;
-use $NAMESPACE_TESTS$\TestCase;
+use $NAMESPACE_TEST_CASES$\TestCase;
 
 abstract class FeatureTestCase extends TestCase
 {

@@ -67,8 +67,11 @@ class CommandData
     /**
      * @param string           $commandType
      */
-    public function __construct(Command $commandObj, $commandType, TemplatesManager $templatesManager = null)
-    {
+    public function __construct(
+        Command $commandObj,
+        $commandType,
+        ?TemplatesManager $templatesManager = null
+    ) {
         $this->commandObj = $commandObj;
 
         if (is_null($templatesManager)) {

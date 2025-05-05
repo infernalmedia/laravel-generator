@@ -141,8 +141,10 @@ class BaseCommand extends Command
         }
 
         if (!$this->isSkip('tests') and !$this->isSkip('scaffold_tests')) {
-            $featureTestCaseGenerator = new FeatureTestCaseGenerator($this->commandData);
-            $featureTestCaseGenerator->generate();
+            if (config('laravel_generator.special_classes.test_case') == 'FeatureTestCase') {
+                $featureTestCaseGenerator = new FeatureTestCaseGenerator($this->commandData);
+                $featureTestCaseGenerator->generate();
+            }
 
             $testTraitsGenerator = new TestTraitsGenerator($this->commandData);
             $testTraitsGenerator->generate();
@@ -272,10 +274,14 @@ class BaseCommand extends Command
             'singular' => $this->commandData->modelName,
             'plural' => $this->commandData->config->mPlural,
             'fields' => [],
+            'validation' => [
+                'attributes' => [],
+            ],
         ];
 
         foreach ($this->commandData->fields as $field) {
             $locales['fields'][$field->name] = Str::title(str_replace('_', ' ', $field->name));
+            $locales['validation']['attributes'][$field->name] = Str::title(str_replace('_', ' ', $field->name));
         }
 
         $path = config('infyom.laravel_generator.path.models_locale_files', base_path('lang/en/models/'));
