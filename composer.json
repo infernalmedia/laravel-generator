@@ -34,6 +34,7 @@
     "rector/rector": "^2.0"
   },
   "scripts": {
+    "test": "phpunit",
     "code-lint": "php-cs-fixer fix --diff --dry-run",
     "code-lint-fix": "php-cs-fixer fix",
     "rector": "vendor/bin/rector process"
