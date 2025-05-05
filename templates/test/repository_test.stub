@@ -1,4 +1,5 @@
 <?php
+//phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
 
 namespace $NAMESPACE_REPOSITORIES_TESTS$;
 
@@ -10,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
 use $NAMESPACE_TEST_CASES$\$CLASS_TEST_CASE$;
 use $NAMESPACE_TEST_TRAITS$\ApiTestTrait;
 use $NAMESPACE_TEST_TRAITS$\ModelTestTrait;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 
 class $MODEL_NAME$RepositoryTest extends $CLASS_TEST_CASE$
 {
@@ -17,27 +20,21 @@ class $MODEL_NAME$RepositoryTest extends $CLASS_TEST_CASE$
     use ApiTestTrait;
     use DatabaseTransactions;
 
-    const MODEL_MAIN_PROPERTY_KEY = 'name';
-    /**
-     * @var $MODEL_NAME$Repository
-     */
-    protected $$MODEL_NAME_CAMEL$Repo;
+    private const string MODEL_MAIN_PROPERTY_KEY = 'name';
+ 
+    protected ?$MODEL_NAME$Repository $$MODEL_NAME_CAMEL$Repo = null;
 
-    /**
-     * @var Model
-     */
-    protected $model;
+    protected ?Model $model = null;
 
-    public function setUp() : void
+    protected function setUp() : void
     {
         parent::setUp();
         $this->$MODEL_NAME_CAMEL$Repo = App::make($MODEL_NAME$Repository::class);
         $this->model = App::make($MODEL_NAME$::class);
     }
 
-    /**
-     * @group $MODEL_NAME_SNAKE$
-     */
+    #[Test]
+    #[Group('$MODEL_NAME_SNAKE$')]
     public function test_create_$MODEL_NAME_SNAKE$()
     {
         $$MODEL_NAME_CAMEL$ = $this->givenValid$MODEL_NAME$Attributes()->toArray();
@@ -56,9 +53,8 @@ class $MODEL_NAME$RepositoryTest extends $CLASS_TEST_CASE$
         $this->assertModelData($$MODEL_NAME_CAMEL$, $created$MODEL_NAME$);
     }
 
-    /**
-     * @group $MODEL_NAME_SNAKE$
-     */
+    #[Test]
+    #[Group('$MODEL_NAME_SNAKE$')]
     public function test_read_$MODEL_NAME_SNAKE$()
     {
         $$MODEL_NAME_CAMEL$ = $this->givenExisting$MODEL_NAME$();
@@ -69,9 +65,8 @@ class $MODEL_NAME$RepositoryTest extends $CLASS_TEST_CASE$
         $this->assertModelData($$MODEL_NAME_CAMEL$->toArray(), $db$MODEL_NAME$);
     }
 
-    /**
-     * @group $MODEL_NAME_SNAKE$
-     */
+    #[Test]
+    #[Group('$MODEL_NAME_SNAKE$')]
     public function test_update_$MODEL_NAME_SNAKE$()
     {
         $$MODEL_NAME_CAMEL$ = $this->givenExisting$MODEL_NAME$();
@@ -88,9 +83,8 @@ class $MODEL_NAME$RepositoryTest extends $CLASS_TEST_CASE$
         $this->assertModelData($updatedData, $db$MODEL_NAME$->toArray());
     }
 
-    /**
-     * @group $MODEL_NAME_SNAKE$
-     */
+    #[Test]
+    #[Group('$MODEL_NAME_SNAKE$')]
     public function test_delete_$MODEL_NAME_SNAKE$()
     {
         $$MODEL_NAME_CAMEL$ = $this->givenExisting$MODEL_NAME$();
@@ -105,12 +99,12 @@ class $MODEL_NAME$RepositoryTest extends $CLASS_TEST_CASE$
         ]);
     }
 
-    private function givenExisting$MODEL_NAME$()
+    private function givenExisting$MODEL_NAME$(): $MODEL_NAME$
     {
         return $MODEL_NAME$::factory()->create();
     }
 
-    private function givenValid$MODEL_NAME$Attributes()
+    private function givenValid$MODEL_NAME$Attributes(): $MODEL_NAME$
     {
         return $MODEL_NAME$::factory()->make();
     }
@@ -120,11 +114,9 @@ class $MODEL_NAME$RepositoryTest extends $CLASS_TEST_CASE$
         return self::MODEL_MAIN_PROPERTY_KEY;
     }
 
-    /**
-    * @return Model
-    */
-    protected function getModel()
+    protected function getModel(): ?Model
     {
         return $this->model;
     }
+    //phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
 }

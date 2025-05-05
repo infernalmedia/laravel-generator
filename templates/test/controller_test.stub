@@ -1,4 +1,5 @@
 <?php
+//phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
 
 namespace $NAMESPACE_CONTROLLERS_TESTS$;
 
@@ -9,6 +10,8 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Model;
 use $NAMESPACE_TEST_CASES$\$CLASS_TEST_CASE$;
 use $NAMESPACE_TEST_TRAITS$\ModelTestTrait;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 
 class $MODEL_NAME$ControllerTest extends $CLASS_TEST_CASE$
 {
@@ -18,40 +21,34 @@ class $MODEL_NAME$ControllerTest extends $CLASS_TEST_CASE$
     const BASE_PATH = '/$ROUTE_PREFIX$$MODEL_NAME_PLURAL_CAMEL$';
     const MODEL_MAIN_PROPERTY_KEY = 'name';
 
-    /**
-     * @var Model
-     */
-    protected $model;
+    protected ?Model $model = null;
 
-    public function setUp() : void
+    protected function setUp() : void
     {
         parent::setUp();
         $this->model = App::make($MODEL_NAME$::class);
     }
 
-    /**
-     * @group $MODEL_NAME_SNAKE$
-     */
+    #[Test]
+    #[Group('$MODEL_NAME_SNAKE$')]
     public function test_can_list_$MODEL_NAME_PLURAL_SNAKE$()
     {
         $response = $this->get(self::BASE_PATH);
         $response->assertStatus(Response::HTTP_OK);
     }
 
-    /**
-      * @group $MODEL_NAME_SNAKE$
-     */
-    public function test_can_access_$MODEL_NAME_SNAKE$_add_form()
+    #[Test]
+    #[Group('$MODEL_NAME_SNAKE$')]
+    public function test_can_access_$MODEL_NAME_SNAKE$_add_form(): void
     {
         $response = $this->get(self::BASE_PATH . "/{$this->getResourceVerb('create')}");
 
         $response->assertStatus(Response::HTTP_OK);
     }
 
-    /**
-     * @group $MODEL_NAME_SNAKE$
-     */
-    public function test_can_create_$MODEL_NAME_SNAKE$()
+    #[Test]
+    #[Group('$MODEL_NAME_SNAKE$')]
+    public function test_can_create_$MODEL_NAME_SNAKE$(): void
     {
         $data = $this->givenValid$MODEL_NAME$Attributes();
         $response = $this->post(self::BASE_PATH, $data->toArray());
@@ -68,45 +65,20 @@ class $MODEL_NAME$ControllerTest extends $CLASS_TEST_CASE$
         );
     }
 
-    /**
-     * @group $MODEL_NAME_SNAKE$
-     */
-    public function test_can_delete_$MODEL_NAME_SNAKE$()
+    #[Test]
+    #[Group('$MODEL_NAME_SNAKE$')]
+    public function test_cannot_access_non_existing_$MODEL_NAME_SNAKE$_edit_form_(): void
     {
-        $data = $this->givenExisting$MODEL_NAME$();
-        $response = $this->post(
-            self::BASE_PATH . '/' . $data->{$this->getModelPrimaryKey()}, 
-            array_merge(['_method' => 'DELETE'])
-        );
-       
-        $response->assertSessionHasNoErrors();
-        $response->assertStatus(Response::HTTP_FOUND);
-        $response->assertRedirect(self::BASE_PATH);
-        $this->assertSoftDeleted($this->getModelTable(), [
-            $this->getModelPrimaryKey() => $data->{$this->getModelPrimaryKey()}
-        ]);
-    }
+        $response = $this->get(self::BASE_PATH . "/123456789/{$this->getResourceVerb('edit')}");
 
-    /**
-     * @group $MODEL_NAME_SNAKE$
-     */
-    public function test_cannot_delete_non_existing_$MODEL_NAME_SNAKE$()
-    {
-        $data = $this->givenExisting$MODEL_NAME$();
-
-        $response = $this->post(
-            self::BASE_PATH . '/' . ($data->{$this->getModelPrimaryKey()} + 333),
-            array_merge(['_method' => 'DELETE'])
-        );
         $response->assertStatus(Response::HTTP_FOUND);
 
         $this->assertSessionHasNotFoundNotification();
     }
 
-    /**
-     * @group $MODEL_NAME_SNAKE$
-     */
-    public function test_can_update_$MODEL_NAME_SNAKE$()
+    #[Test]
+    #[Group('$MODEL_NAME_SNAKE$')]
+    public function test_can_update_$MODEL_NAME_SNAKE$(): void
     {
         $data = $this->givenExisting$MODEL_NAME$();
         $updatedData = $this->givenValid$MODEL_NAME$Attributes();
@@ -129,22 +101,9 @@ class $MODEL_NAME$ControllerTest extends $CLASS_TEST_CASE$
         );
     }
 
-    /**
-     * @group $MODEL_NAME_SNAKE$
-     */
-    public function test_cannot_access_non_existing_$MODEL_NAME_SNAKE$_edit_form_()
-    {
-        $response = $this->get(self::BASE_PATH . "/123456789/{$this->getResourceVerb('edit')}");
-
-        $response->assertStatus(Response::HTTP_FOUND);
-
-        $this->assertSessionHasNotFoundNotification();
-    }
-
-    /**
-     * @group $MODEL_NAME_SNAKE$
-     */
-    public function test_cannot_update_non_existing_$MODEL_NAME_SNAKE$()
+    #[Test]
+    #[Group('$MODEL_NAME_SNAKE$')]
+    public function test_cannot_update_non_existing_$MODEL_NAME_SNAKE$(): void
     {
         $data = $this->givenExisting$MODEL_NAME$();
         $updatedData = $this->givenValid$MODEL_NAME$Attributes();
@@ -159,26 +118,58 @@ class $MODEL_NAME$ControllerTest extends $CLASS_TEST_CASE$
         $this->assertSessionHasNotFoundNotification();
     }
 
-    private function givenExisting$MODEL_NAME$()
+    #[Test]
+    #[Group('$MODEL_NAME_SNAKE$')]
+    public function test_can_delete_$MODEL_NAME_SNAKE$(): void
+    {
+        $data = $this->givenExisting$MODEL_NAME$();
+        $response = $this->post(
+            self::BASE_PATH . '/' . $data->{$this->getModelPrimaryKey()}, 
+            array_merge(['_method' => 'DELETE'])
+        );
+       
+        $response->assertSessionHasNoErrors();
+        $response->assertStatus(Response::HTTP_FOUND);
+        $response->assertRedirect(self::BASE_PATH);
+        $this->assertSoftDeleted($this->getModelTable(), [
+            $this->getModelPrimaryKey() => $data->{$this->getModelPrimaryKey()}
+        ]);
+    }
+
+    #[Test]
+    #[Group('$MODEL_NAME_SNAKE$')]
+    public function test_cannot_delete_non_existing_$MODEL_NAME_SNAKE$(): void
+    {
+        $data = $this->givenExisting$MODEL_NAME$();
+
+        $response = $this->post(
+            self::BASE_PATH . '/' . ($data->{$this->getModelPrimaryKey()} + 333),
+            array_merge(['_method' => 'DELETE'])
+        );
+        $response->assertStatus(Response::HTTP_FOUND);
+
+        $this->assertSessionHasNotFoundNotification();
+    }
+
+    private function givenExisting$MODEL_NAME$(): $MODEL_NAME$
     {
        return $MODEL_NAME$::factory()->create();
     }
 
-    private function givenValid$MODEL_NAME$Attributes()
+    private function givenValid$MODEL_NAME$Attributes(): $MODEL_NAME$
     {
        return $MODEL_NAME$::factory()->make();
     }
 
-    protected function getModelMainPropertyKey()
+    protected function getModelMainPropertyKey(): string
     {
         return self::MODEL_MAIN_PROPERTY_KEY;
     }
 
-    /**
-    * @return Model
-    */
-    protected function getModel()
+    protected function getModel(): ?Model
     {
         return $this->model;
     }
+    
+    //phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
 }
