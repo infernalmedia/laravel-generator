@@ -119,12 +119,6 @@ class ModelGenerator extends BaseGenerator
                 $templateData
             );
             $templateData = str_replace('$SOFT_DELETE$', infy_tab() . "use SoftDeletes;\n", $templateData);
-            $deletedAtTimestamp = config('infyom.laravel_generator.timestamps.deleted_at', 'deleted_at');
-            $templateData = str_replace(
-                '$SOFT_DELETE_DATES$',
-                infy_nl_tab() . "protected \$dates = ['" . $deletedAtTimestamp . "'];\n",
-                $templateData
-            );
         }
 
         return $templateData;
@@ -174,6 +168,8 @@ class ModelGenerator extends BaseGenerator
         foreach ($this->commandData->fields as $field) {
             if ($field->isFillable) {
                 $fillables .= ' * @property ' . $this->getPHPDocType($field->fieldType) . ' $' . $field->name . PHP_EOL;
+            } else {
+                $fillables .= ' * @property-read ' . $this->getPHPDocType($field->fieldType) . ' $' . $field->name . PHP_EOL;
             }
         }
 
@@ -285,7 +281,7 @@ class ModelGenerator extends BaseGenerator
     private function generateRules(): array
     {
         $dont_require_fields = config('infyom.laravel_generator.options.hidden_fields', [])
-                + config('infyom.laravel_generator.options.excluded_fields', $this->excluded_fields);
+            + config('infyom.laravel_generator.options.excluded_fields', $this->excluded_fields);
 
         $rules = [];
 
@@ -383,13 +379,7 @@ class ModelGenerator extends BaseGenerator
     {
         $casts = [];
 
-        $timestamps = TableFieldsGenerator::getTimestampFieldNames();
-
         foreach ($this->commandData->fields as $field) {
-            if (in_array($field->name, $timestamps)) {
-                continue;
-            }
-
             $rule = "'" . $field->name . "' => ";
 
             switch (strtolower($field->fieldType)) {

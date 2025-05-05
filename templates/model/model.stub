@@ -12,12 +12,9 @@ class $MODEL_NAME$ extends Model
 $SOFT_DELETE$
 $HAS_FACTORY$
     public $table = '$TABLE_NAME$';
-    $TIMESTAMPS$
-$SOFT_DELETE_DATES$
 $CONNECTION$
 $PRIMARY$
     public $fillable = [
-        'created_at',
         $FIELDS$
     ];
 
