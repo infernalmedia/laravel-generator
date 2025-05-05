@@ -19,14 +19,17 @@ $PRIMARY$
     ];
 
     /**
-     * The attributes that should be casted to native types.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        $CAST$
-    ];
+    protected function casts(): array
+    {
+        return [
+            $CAST$
+        ];
 
+    }
 
     public static function rules(): array
     {
