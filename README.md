@@ -15,6 +15,7 @@ Read [Documentation](https://www.infyom.com/open-source) for detailed installati
 | 10.x      | >=10.x  | 9.x-11.x |
 | 11.x      | >=11.x  | 11.x     |
 | 12.0      | >=12.x  | 11.x     |
+| 12.1      | >=12.x  | 12.x     |
 
 ## Inclusion in IM projects
 
