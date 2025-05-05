@@ -3,15 +3,15 @@
 namespace $NAMESPACE_CONTROLLER$;
 
 use $NAMESPACE_DATATABLES$\$MODEL_NAME$DataTable;
-use $NAMESPACE_REQUEST$\Create$MODEL_NAME$Request;
-use $NAMESPACE_REQUEST$\Update$MODEL_NAME$Request;
+use $NAMESPACE_REQUEST$\$MODEL_NAME$\Create$MODEL_NAME$Request;
+use $NAMESPACE_REQUEST$\$MODEL_NAME$\Update$MODEL_NAME$Request;
 use $NAMESPACE_REPOSITORY$\$MODEL_NAME$Repository;
 use $NAMESPACE_APP$\Http\Controllers\AppBaseController;
 use $NAMESPACE_APP$\Traits\CrudControllerTrait;
-use Response;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Redirector;
 
 class $MODEL_NAME$Controller extends AppBaseController
 {

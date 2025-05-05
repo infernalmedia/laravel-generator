@@ -2,14 +2,15 @@
 
 namespace $NAMESPACE_CONTROLLER$;
 
-use $NAMESPACE_REQUEST$\Create$MODEL_NAME$Request;
-use $NAMESPACE_REQUEST$\Update$MODEL_NAME$Request;
+use $NAMESPACE_REQUEST$\$MODEL_NAME$\Create$MODEL_NAME$Request;
+use $NAMESPACE_REQUEST$\$MODEL_NAME$\Update$MODEL_NAME$Request;
 use $NAMESPACE_REPOSITORY$\$MODEL_NAME$Repository;
 use $NAMESPACE_APP$\Http\Controllers\AppBaseController;
 use $NAMESPACE_APP$\Traits\CrudControllerTrait;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 
 
 class $MODEL_NAME$Controller extends AppBaseController
@@ -31,7 +32,7 @@ class $MODEL_NAME$Controller extends AppBaseController
     {
         $$MODEL_NAME_PLURAL_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->$RENDER_TYPE$;
 
-        return $this->returnView('intdex')
+        return $this->returnView('index')
             ->with('$MODEL_NAME_PLURAL_CAMEL$', $$MODEL_NAME_PLURAL_CAMEL$);
     }
 

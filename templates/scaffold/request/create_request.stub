@@ -1,30 +1,29 @@
 <?php
 
-namespace $NAMESPACE_REQUEST$;
+namespace $NAMESPACE_REQUEST$\$MODEL_NAME$;
 
 use Illuminate\Foundation\Http\FormRequest;
-use $NAMESPACE_MODEL$\$MODEL_NAME$;
+use $NAMESPACE_REQUEST$\$MODEL_NAME$\$MODEL_NAME$Request;
 
-class Create$MODEL_NAME$Request extends FormRequest
+class Create$MODEL_NAME$Request extends $MODEL_NAME$Request
 {
-
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return array_merge(parent::rules(), []);
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
      * @return array
      */
-    public function rules()
+    public function attributes()
     {
-        return $MODEL_NAME$::$rules;
+        return array_merge(parent::attributes(), []);
     }
 }
