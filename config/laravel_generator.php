@@ -192,6 +192,8 @@ return [
 
         'datatables'    => false,
 
+        'livewire_datatables'    => false,
+
         'menu'          => [
 
             'enabled'       => true,

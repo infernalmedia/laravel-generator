@@ -86,6 +86,12 @@ class ViewGenerator extends BaseGenerator
         if ($this->commandData->getAddOn('datatables')) {
             $templateData = $this->generateDataTableBody();
             $this->generateDataTableActions();
+        } elseif ($this->commandData->getAddOn('livewire_datatables')) {
+            if (class_exists('App\Console\Commands\MakeDatatable')) {
+                $templateData = $this->generateLivewireDataTableBody();
+            } else {
+                $this->commandData->commandComment("Livewire Datatables not found");
+            }
         } else {
             $templateData = $this->generateBladeTableBody();
         }
@@ -98,6 +104,13 @@ class ViewGenerator extends BaseGenerator
     private function generateDataTableBody()
     {
         $templateData = get_template('scaffold.views.datatable_body', $this->templateType);
+
+        return fill_template($this->commandData->dynamicVars, $templateData);
+    }
+
+    private function generateLivewireDataTableBody()
+    {
+        $templateData = get_template('scaffold.views.livewire_datatable_body', $this->templateType);
 
         return fill_template($this->commandData->dynamicVars, $templateData);
     }

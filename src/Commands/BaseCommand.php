@@ -204,6 +204,18 @@ class BaseCommand extends Command
             $this->info('Generating autoload files');
             $this->composer->dumpOptimized();
         }
+
+        if ($this->commandData->getAddOn('livewire_datatables')) {
+            if (class_exists('App\Console\Commands\MakeDatatable')) {
+                $this->line('custom MakeDatatable has been found, command will be run');
+                $this->call('make:datatable', ['name' => $this->commandData->config->mPlural . 'Table', 'model' => $this->commandData->modelName]);
+            } elseif (class_exists('Rappasoft\LaravelLivewireTables\Commands\MakeCommand')) {
+                $this->line('Rappasoft Table has been found, command will be run');
+                $this->call('make:datatable', ['name' => $this->commandData->config->mPlural . 'Table', 'model' => $this->commandData->modelName]);
+            } else {
+                $this->error("Livewire Datatables not found");
+            }
+        }
     }
 
     public function runMigration()
@@ -226,7 +238,7 @@ class BaseCommand extends Command
 
     public function performPostActionsWithMigration(): void
     {
-        $this->performPostActions(true);
+        $this->performPostActions(false);
     }
 
     private function saveSchemaFile(): void
