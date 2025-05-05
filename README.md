@@ -30,4 +30,4 @@ Add this entry in `composer.json` :
     ],
 ```
 
-Then, run `composer require infyomlabs/laravel-generator:dev-develop`
+Then, run `composer require infyomlabs/laravel-generator`
