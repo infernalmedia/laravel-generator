@@ -45,6 +45,8 @@ return [
 
         'test_cases'        => base_path('tests/'),
 
+        'test_traits'       => base_path('tests/'),
+
         'views'             => resource_path('views/'),
 
         'schema_files'      => resource_path('model_schemas/'),
@@ -100,6 +102,8 @@ return [
         'tests'             => 'Tests',
 
         'test_cases'        => 'Tests',
+
+        'test_traits'       => 'Tests',
     ],
 
     /*

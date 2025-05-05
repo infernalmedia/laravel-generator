@@ -1,9 +1,11 @@
-<?php namespace $NAMESPACE_API_TESTS$;
+<?php
+
+namespace $NAMESPACE_TEST_TRAITS$;
 
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use $NAMESPACE_TESTS$\TestCase;
-use $NAMESPACE_TESTS$\ApiTestTrait;
+use $NAMESPACE_TEST_TRAITS$\ApiTestTrait;
 use $NAMESPACE_MODEL$\$MODEL_NAME$;
 
 class $MODEL_NAME$ApiTest extends TestCase

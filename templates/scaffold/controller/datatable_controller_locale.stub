@@ -116,7 +116,7 @@ class $MODEL_NAME$Controller extends AppBaseController
         return self::MODEL_LANG_PATH;
     }
 
-    private function getModelGender(): string
+    protected function getModelGender(): string
     {
         return self::MODEL_GENDER;
     }

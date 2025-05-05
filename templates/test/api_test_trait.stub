@@ -1,11 +1,14 @@
-<?php namespace $NAMESPACE_TESTS$;
+<?php
+
+namespace $NAMESPACE_TEST_TRAITS$;
+
+use Illuminate\Testing\TestResponse;
 
 trait ApiTestTrait
 {
-    /**  @var \Illuminate\Testing\TestResponse */
-    private $response;
+    private ?TestResponse $response = null;
     
-    public function assertApiResponse(Array $actualData)
+    public function assertApiResponse(array $actualData): void
     {
         $this->assertApiSuccess();
 
@@ -16,28 +19,28 @@ trait ApiTestTrait
         $this->assertModelData($actualData, $responseData);
     }
 
-    public function assertApiSuccess()
+    public function assertApiSuccess(): void
     {
         $this->response->assertStatus(200);
         $this->response->assertJson(['success' => true]);
     }
 
-    public function assertModelData(Array $actualData, Array $expectedData)
+    public function assertModelData(array $actualData, array $expectedData): void
     {
         foreach ($actualData as $key => $value) {
             if (in_array($key, $this->getFullTimeStamps())) {
                 continue;
             }
-            $this->assertEquals($actualData[$key], $expectedData[$key]);
+            $this->assertEquals($expectedData[$key], $actualData[$key]);
         }
     }
 
     private function getFullTimeStamps(): array
     {
-        return array(
+        return [
             config('infyom.laravel_generator.timestamps.created_at', 'created_at'),
             config('infyom.laravel_generator.timestamps.updated_at', 'updated_at'),
             config('infyom.laravel_generator.timestamps.deleted_at', 'deleted_at'),
-        );
+        ];
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Model;
 use $NAMESPACE_TEST_CASES$\$CLASS_TEST_CASE$;
-use $NAMESPACE_TESTS$\ModelTestTrait;
+use $NAMESPACE_TEST_TRAITS$\ModelTestTrait;
 
 class $MODEL_NAME$ControllerTest extends $CLASS_TEST_CASE$
 {

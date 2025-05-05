@@ -1,36 +1,28 @@
-<?php 
+<?php
 
-namespace $NAMESPACE_TESTS$;
+namespace $NAMESPACE_TEST_TRAITS$;
 
 use Illuminate\Database\Eloquent\Model;
 
 trait ModelTestTrait
 {
-    /** @var string */
-    private $modelPrimaryKey;
-    /** @var string */
-    private $modelTable;
+    private ?string $modelPrimaryKey = null;
+    private ?string $modelTable = null;
 
     /**
      * The model main property
-     *
-     * @return string
      */
-    abstract protected function getModelMainPropertyKey();
+    abstract protected function getModelMainPropertyKey(): string;
 
     /**
      * The initialized model class
-     *
-     * @return Model
      */
-    abstract protected function getModel();
+    abstract protected function getModel(): Model;
 
     /**
      * Get the model primary key column name
-     *
-     * @return  string
      */
-    protected function getModelPrimaryKey()
+    protected function getModelPrimaryKey(): string
     {
         if (!$this->modelPrimaryKey) {
             $this->setModelPrimaryKey();
@@ -40,10 +32,8 @@ trait ModelTestTrait
 
     /**
      * Set the value of modelPrimaryKey
-     *
-     * @return  self
      */
-    protected function setModelPrimaryKey()
+    protected function setModelPrimaryKey(): self
     {
         $this->modelPrimaryKey = $this->getModel()->getKeyName();
 
@@ -52,10 +42,8 @@ trait ModelTestTrait
 
     /**
      * Get model table name
-     *
-     * @return  string
      */
-    protected function getModelTable()
+    protected function getModelTable(): string
     {
         if (!$this->modelTable) {
             $this->setModelTable();
@@ -65,10 +53,8 @@ trait ModelTestTrait
 
     /**
      * Set the value of modelTable
-     *
-     * @return  self
      */
-    protected function setModelTable()
+    protected function setModelTable(): self
     {
         $this->modelTable = $this->getModel()->getTable();
 

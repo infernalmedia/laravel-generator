@@ -225,6 +225,7 @@ class GeneratorConfig
         $this->nsRepositoryTests = config('infyom.laravel_generator.namespace.repository_test', 'Tests\Repositories');
         $this->nsTests = config('infyom.laravel_generator.namespace.tests', 'Tests');
         $this->nsTestCases = config('infyom.laravel_generator.namespace.test_cases', 'Tests');
+        $this->nsTestTraits = config('infyom.laravel_generator.namespace.test_traits', 'Tests');
         $this->scTestCase = config('infyom.laravel_generator.special_classes.test_case', 'FeatureTestCase');
         $this->controllerTests = config('infyom.laravel_generator.namespace.controller_tests', 'Tests\Controllers');
     }
@@ -333,6 +334,7 @@ class GeneratorConfig
         $commandData->addDynamicVariable('$NAMESPACE_REPOSITORIES_TESTS$', $this->nsRepositoryTests);
         $commandData->addDynamicVariable('$NAMESPACE_TESTS$', $this->nsTests);
         $commandData->addDynamicVariable('$NAMESPACE_TEST_CASES$', $this->nsTestCases);
+        $commandData->addDynamicVariable('$NAMESPACE_TEST_TRAITS$', $this->nsTestTraits);
         $commandData->addDynamicVariable('$CLASS_TEST_CASE$', $this->scTestCase);
 
         $commandData->addDynamicVariable('$NAMESPACE_CONTROLLERS_TESTS$', $this->controllerTests);

@@ -27,7 +27,7 @@ class TestTraitsGenerator extends BaseGenerator
     public function __construct($commandData)
     {
         $this->commandData = $commandData;
-        $this->path = config('infyom.laravel_generator.path.tests', base_path('tests/'));
+        $this->path = config('infyom.laravel_generator.path.test_traits', base_path('tests/'));
     }
 
     public function generate(): void
