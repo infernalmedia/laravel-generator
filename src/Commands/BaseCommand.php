@@ -293,6 +293,9 @@ class BaseCommand extends Command
 
         foreach ($this->commandData->fields as $field) {
             $locales['fields'][$field->name] = Str::title(str_replace('_', ' ', $field->name));
+            if (!$field->isFillable) {
+                continue;
+            }
             $locales['validation']['attributes'][$field->name] = Str::title(str_replace('_', ' ', $field->name));
         }
 
