@@ -3,9 +3,9 @@
 namespace $NAMESPACE_REQUEST$\$MODEL_NAME$;
 
 use Illuminate\Foundation\Http\FormRequest;
-use $NAMESPACE_MODEL$\$MODEL_NAME$;
+use $NAMESPACE_REQUEST$\$MODEL_NAME$\$MODEL_NAME$Request;
 
-class Update$MODEL_NAME$Request extends FormRequest
+class Update$MODEL_NAME$Request extends $MODEL_NAME$Request
 {
     /**
      * Get the validation rules that apply to the request.
