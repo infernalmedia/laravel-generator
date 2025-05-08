@@ -114,7 +114,7 @@ class $MODEL_NAME$RepositoryTest extends $CLASS_TEST_CASE$
         return self::MODEL_MAIN_PROPERTY_KEY;
     }
 
-    protected function getModel(): ?Model
+    protected function getModel(): Model
     {
         return $this->model;
     }
