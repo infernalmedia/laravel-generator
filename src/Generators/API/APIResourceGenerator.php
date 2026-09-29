@@ -8,19 +8,15 @@ use InfyOm\Generator\Utils\FileUtil;
 
 class APIResourceGenerator extends BaseGenerator
 {
-    /** @var CommandData */
-    private $commandData;
-
     /** @var string */
     private $path;
 
     /** @var string */
     private $fileName;
 
-    public function __construct(CommandData $commandData)
+    public function __construct(private readonly CommandData $commandData)
     {
-        $this->commandData = $commandData;
-        $this->path = $commandData->config->pathApiResource;
+        $this->path = $this->commandData->config->pathApiResource;
         $this->fileName = $this->commandData->modelName . 'Resource.php';
     }
 

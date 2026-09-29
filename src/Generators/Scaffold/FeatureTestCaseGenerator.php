@@ -12,15 +12,14 @@ class FeatureTestCaseGenerator extends BaseGenerator
 
     const STUB_FILE_NAME = 'feature_test_case';
 
-    /** @var CommandData */
-    private $commandData;
-
     /** @var string */
     private $path;
 
-    public function __construct($commandData)
+    /**
+     * @param CommandData $commandData
+     */
+    public function __construct(private $commandData)
     {
-        $this->commandData = $commandData;
         $this->path = config('infyom.laravel_generator.path.tests', base_path('tests/'));
     }
 

@@ -8,9 +8,6 @@ use InfyOm\Generator\Generators\BaseGenerator;
 
 class MenuGenerator extends BaseGenerator
 {
-    /** @var CommandData */
-    private $commandData;
-
     /** @var string */
     private $path;
 
@@ -23,15 +20,14 @@ class MenuGenerator extends BaseGenerator
     /** @var string */
     private $menuTemplate;
 
-    public function __construct(CommandData $commandData)
+    public function __construct(private readonly CommandData $commandData)
     {
-        $this->commandData = $commandData;
         $this->path = config(
             'infyom.laravel_generator.path.views',
             resource_path(
                 'views/'
             )
-        ) . $commandData->getAddOn('menu.menu_file');
+        ) . $this->commandData->getAddOn('menu.menu_file');
         $this->templateType = config('infyom.laravel_generator.templates', 'adminlte-templates');
 
         $this->menuContents = file_get_contents($this->path);

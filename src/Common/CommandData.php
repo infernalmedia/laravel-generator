@@ -24,8 +24,6 @@ class CommandData
     /** @var string */
     public $modelName;
 
-    public $commandType;
-
     /** @var GeneratorConfig */
     public $config;
 
@@ -69,7 +67,7 @@ class CommandData
      */
     public function __construct(
         Command $commandObj,
-        $commandType,
+        public $commandType,
         ?TemplatesManager $templatesManager = null
     ) {
         $this->commandObj = $commandObj;
@@ -79,8 +77,6 @@ class CommandData
         } else {
             $this->templateManager = $templatesManager;
         }
-
-        $this->commandType = $commandType;
 
         $this->fieldNamesMapping = [
             '$FIELD_NAME_TITLE$' => 'fieldTitle',

@@ -7,18 +7,17 @@ use InfyOm\Generator\Utils\FileUtil;
 
 class RepositoryTestGenerator extends BaseGenerator
 {
-    /** @var CommandData */
-    private $commandData;
-
     /** @var string */
     private $path;
 
     /** @var string */
     private $fileName;
 
-    public function __construct($commandData)
+    /**
+     * @param CommandData $commandData
+     */
+    public function __construct(private $commandData)
     {
-        $this->commandData = $commandData;
         $this->path = config('infyom.laravel_generator.path.repository_test', base_path('tests/Repositories/'));
         $this->fileName = $this->commandData->modelName . 'RepositoryTest.php';
     }

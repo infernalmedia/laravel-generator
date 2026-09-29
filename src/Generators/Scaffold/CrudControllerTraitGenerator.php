@@ -12,15 +12,11 @@ class CrudControllerTraitGenerator extends BaseGenerator
 
     const STUB_FILE_NAME = 'crud_controller_trait';
 
-    /** @var CommandData */
-    private $commandData;
-
     /** @var string */
     private $path;
 
-    public function __construct(CommandData $commandData)
+    public function __construct(private readonly CommandData $commandData)
     {
-        $this->commandData = $commandData;
         $this->path = config('infyom.laravel_generator.path.traits', (app_path('Traits/')));
     }
 

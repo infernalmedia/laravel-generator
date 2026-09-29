@@ -8,18 +8,17 @@ use InfyOm\Generator\Utils\FileUtil;
 
 class ControllerTestGenerator extends BaseGenerator
 {
-    /** @var CommandData */
-    private $commandData;
-
     /** @var string */
     private $path;
 
     /** @var string */
     private $fileName;
 
-    public function __construct($commandData)
+    /**
+     * @param CommandData $commandData
+     */
+    public function __construct(private $commandData)
     {
-        $this->commandData = $commandData;
         $this->path = config('infyom.laravel_generator.path.controller_tests', base_path('tests/Controllers/'));
         $this->fileName = $this->commandData->modelName . 'ControllerTest.php';
     }

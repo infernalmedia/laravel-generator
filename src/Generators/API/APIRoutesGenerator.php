@@ -8,9 +8,6 @@ use InfyOm\Generator\Generators\BaseGenerator;
 
 class APIRoutesGenerator extends BaseGenerator
 {
-    /** @var CommandData */
-    private $commandData;
-
     /** @var string */
     private $path;
 
@@ -20,10 +17,9 @@ class APIRoutesGenerator extends BaseGenerator
     /** @var string */
     private $routesTemplate;
 
-    public function __construct(CommandData $commandData)
+    public function __construct(private readonly CommandData $commandData)
     {
-        $this->commandData = $commandData;
-        $this->path = $commandData->config->pathApiRoutes;
+        $this->path = $this->commandData->config->pathApiRoutes;
 
         $this->routeContents = file_get_contents($this->path);
 

@@ -7,19 +7,15 @@ use InfyOm\Generator\Utils\FileUtil;
 
 class RepositoryGenerator extends BaseGenerator
 {
-    /** @var CommandData */
-    private $commandData;
-
     /** @var string */
     private $path;
 
     /** @var string */
     private $fileName;
 
-    public function __construct(CommandData $commandData)
+    public function __construct(private readonly CommandData $commandData)
     {
-        $this->commandData = $commandData;
-        $this->path = $commandData->config->pathRepository;
+        $this->path = $this->commandData->config->pathRepository;
         $this->fileName = $this->commandData->modelName . 'Repository.php';
     }
 

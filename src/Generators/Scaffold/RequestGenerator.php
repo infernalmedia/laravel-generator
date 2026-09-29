@@ -9,9 +9,6 @@ use InfyOm\Generator\Utils\FileUtil;
 
 class RequestGenerator extends BaseGenerator
 {
-    /** @var CommandData */
-    private $commandData;
-
     /** @var string */
     private $path;
 
@@ -24,13 +21,13 @@ class RequestGenerator extends BaseGenerator
     /** @var string */
     private $updateFileName;
 
-    public function __construct(CommandData $commandData)
+    public function __construct(private readonly CommandData $commandData)
     {
-        $this->commandData = $commandData;
-        $this->path = $commandData->config->pathRequest . $commandData->config->mName . '/';
+        $this->path = $this->commandData->config->pathRequest . $this->commandData->config->mName . '/';
         if (!file_exists($this->path)) {
             mkdir($this->path, 0755, true);
         }
+
         $this->commonFileName = $this->commandData->modelName . 'Request.php';
         $this->createFileName = 'Create' . $this->commandData->modelName . 'Request.php';
         $this->updateFileName = 'Update' . $this->commandData->modelName . 'Request.php';

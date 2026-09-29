@@ -8,9 +8,6 @@ use InfyOm\Generator\Utils\FileUtil;
 
 class ControllerGenerator extends BaseGenerator
 {
-    /** @var CommandData */
-    private $commandData;
-
     /** @var string */
     private $path;
 
@@ -20,10 +17,9 @@ class ControllerGenerator extends BaseGenerator
     /** @var string */
     private $fileName;
 
-    public function __construct(CommandData $commandData)
+    public function __construct(private readonly CommandData $commandData)
     {
-        $this->commandData = $commandData;
-        $this->path = $commandData->config->pathController;
+        $this->path = $this->commandData->config->pathController;
         $this->templateType = config('infyom.laravel_generator.templates', 'adminlte-templates');
         $this->fileName = $this->commandData->modelName . 'Controller.php';
     }

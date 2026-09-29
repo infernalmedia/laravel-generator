@@ -10,14 +10,11 @@ use InfyOm\Generator\Common\CommandData;
  */
 class ViewServiceProviderGenerator extends BaseGenerator
 {
-    private $commandData;
-
     /**
      * ViewServiceProvider constructor.
      */
-    public function __construct(CommandData $commandData)
+    public function __construct(private readonly CommandData $commandData)
     {
-        $this->commandData = $commandData;
     }
 
     /**

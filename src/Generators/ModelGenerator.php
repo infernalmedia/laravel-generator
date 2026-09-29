@@ -21,9 +21,6 @@ class ModelGenerator extends BaseGenerator
         'deleted_at',
     ];
 
-    /** @var CommandData */
-    private $commandData;
-
     /** @var string */
     private $path;
 
@@ -34,10 +31,9 @@ class ModelGenerator extends BaseGenerator
     /**
      * ModelGenerator constructor.
      */
-    public function __construct(CommandData $commandData)
+    public function __construct(private readonly CommandData $commandData)
     {
-        $this->commandData = $commandData;
-        $this->path = $commandData->config->pathModel;
+        $this->path = $this->commandData->config->pathModel;
         $this->fileName = $this->commandData->modelName . '.php';
         $this->table = $this->commandData->dynamicVars['$TABLE_NAME$'];
     }
@@ -264,9 +260,7 @@ class ModelGenerator extends BaseGenerator
         }
 
         if ($this->commandData->getOption('fromTable') && !empty($timestamps)) {
-            [$created_at, $updated_at] = collect($timestamps)->map(function ($field) {
-                return !empty($field) ? sprintf("'%s'", $field) : 'null';
-            });
+            [$created_at, $updated_at] = collect($timestamps)->map(fn($field) => !empty($field) ? sprintf("'%s'", $field) : 'null');
 
             $replace .= infy_nl_tab() . sprintf('const CREATED_AT = %s;', $created_at);
             $replace .= infy_nl_tab() . "const UPDATED_AT = {$updated_at};\n";
@@ -342,9 +336,7 @@ class ModelGenerator extends BaseGenerator
                 if (Str::contains($field->validations, 'unique:')) {
                     $rule = explode('|', $field->validations);
                     // move unique rule to last
-                    usort($rule, function ($record) {
-                        return (Str::contains($record, 'unique:')) ? 1 : 0;
-                    });
+                    usort($rule, fn($record) => (Str::contains($record, 'unique:')) ? 1 : 0);
                     $field->validations = implode('|', $rule);
                 }
 

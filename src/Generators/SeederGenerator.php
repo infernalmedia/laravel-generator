@@ -10,9 +10,6 @@ use InfyOm\Generator\Utils\FileUtil;
  */
 class SeederGenerator extends BaseGenerator
 {
-    /** @var CommandData */
-    private $commandData;
-
     /** @var string */
     private $path;
 
@@ -21,10 +18,9 @@ class SeederGenerator extends BaseGenerator
     /**
      * ModelGenerator constructor.
      */
-    public function __construct(CommandData $commandData)
+    public function __construct(private readonly CommandData $commandData)
     {
-        $this->commandData = $commandData;
-        $this->path = $commandData->config->pathSeeder;
+        $this->path = $this->commandData->config->pathSeeder;
         $this->fileName = $this->commandData->config->mPlural . 'TableSeeder.php';
     }
 

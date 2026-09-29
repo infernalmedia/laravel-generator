@@ -9,9 +9,6 @@ use InfyOm\Generator\Utils\FileUtil;
 
 class APIRequestGenerator extends BaseGenerator
 {
-    /** @var CommandData */
-    private $commandData;
-
     /** @var string */
     private $path;
 
@@ -21,10 +18,9 @@ class APIRequestGenerator extends BaseGenerator
     /** @var string */
     private $updateFileName;
 
-    public function __construct(CommandData $commandData)
+    public function __construct(private readonly CommandData $commandData)
     {
-        $this->commandData = $commandData;
-        $this->path = $commandData->config->pathApiRequest;
+        $this->path = $this->commandData->config->pathApiRequest;
         $this->createFileName = 'Create' . $this->commandData->modelName . 'APIRequest.php';
         $this->updateFileName = 'Update' . $this->commandData->modelName . 'APIRequest.php';
     }

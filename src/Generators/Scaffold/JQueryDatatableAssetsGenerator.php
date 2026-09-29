@@ -11,9 +11,6 @@ use InfyOm\Generator\Utils\FileUtil;
  */
 class JQueryDatatableAssetsGenerator extends BaseGenerator
 {
-    /** @var CommandData */
-    private $commandData;
-
     /** @var string */
     private $path;
 
@@ -22,10 +19,9 @@ class JQueryDatatableAssetsGenerator extends BaseGenerator
 
     private $config;
 
-    public function __construct(CommandData $commandData)
+    public function __construct(private readonly CommandData $commandData)
     {
-        $this->commandData = $commandData;
-        $this->path = $commandData->config->pathAssets . 'js/';
+        $this->path = $this->commandData->config->pathAssets . 'js/';
         $this->config = $this->commandData->config;
         $this->fileName = $this->config->tableName . '.js';
     }

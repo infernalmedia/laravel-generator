@@ -40,73 +40,39 @@ class InfyOmGeneratorServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton('infyom.publish', function ($app) {
-            return new GeneratorPublishCommand();
-        });
+        $this->app->singleton('infyom.publish', fn($app) => new GeneratorPublishCommand());
 
-        $this->app->singleton('infyom.api', function ($app) {
-            return new APIGeneratorCommand();
-        });
+        $this->app->singleton('infyom.api', fn($app) => new APIGeneratorCommand());
 
-        $this->app->singleton('infyom.scaffold', function ($app) {
-            return new ScaffoldGeneratorCommand();
-        });
+        $this->app->singleton('infyom.scaffold', fn($app) => new ScaffoldGeneratorCommand());
 
-        $this->app->singleton('infyom.publish.layout', function ($app) {
-            return new LayoutPublishCommand();
-        });
+        $this->app->singleton('infyom.publish.layout', fn($app) => new LayoutPublishCommand());
 
-        $this->app->singleton('infyom.publish.templates', function ($app) {
-            return new PublishTemplateCommand();
-        });
+        $this->app->singleton('infyom.publish.templates', fn($app) => new PublishTemplateCommand());
 
-        $this->app->singleton('infyom.api_scaffold', function ($app) {
-            return new APIScaffoldGeneratorCommand();
-        });
+        $this->app->singleton('infyom.api_scaffold', fn($app) => new APIScaffoldGeneratorCommand());
 
-        $this->app->singleton('infyom.migration', function ($app) {
-            return new MigrationGeneratorCommand();
-        });
+        $this->app->singleton('infyom.migration', fn($app) => new MigrationGeneratorCommand());
 
-        $this->app->singleton('infyom.model', function ($app) {
-            return new ModelGeneratorCommand();
-        });
+        $this->app->singleton('infyom.model', fn($app) => new ModelGeneratorCommand());
 
-        $this->app->singleton('infyom.repository', function ($app) {
-            return new RepositoryGeneratorCommand();
-        });
+        $this->app->singleton('infyom.repository', fn($app) => new RepositoryGeneratorCommand());
 
-        $this->app->singleton('infyom.api.controller', function ($app) {
-            return new APIControllerGeneratorCommand();
-        });
+        $this->app->singleton('infyom.api.controller', fn($app) => new APIControllerGeneratorCommand());
 
-        $this->app->singleton('infyom.api.requests', function ($app) {
-            return new APIRequestsGeneratorCommand();
-        });
+        $this->app->singleton('infyom.api.requests', fn($app) => new APIRequestsGeneratorCommand());
 
-        $this->app->singleton('infyom.api.tests', function ($app) {
-            return new TestsGeneratorCommand();
-        });
+        $this->app->singleton('infyom.api.tests', fn($app) => new TestsGeneratorCommand());
 
-        $this->app->singleton('infyom.scaffold.controller', function ($app) {
-            return new ControllerGeneratorCommand();
-        });
+        $this->app->singleton('infyom.scaffold.controller', fn($app) => new ControllerGeneratorCommand());
 
-        $this->app->singleton('infyom.scaffold.requests', function ($app) {
-            return new RequestsGeneratorCommand();
-        });
+        $this->app->singleton('infyom.scaffold.requests', fn($app) => new RequestsGeneratorCommand());
 
-        $this->app->singleton('infyom.scaffold.views', function ($app) {
-            return new ViewsGeneratorCommand();
-        });
+        $this->app->singleton('infyom.scaffold.views', fn($app) => new ViewsGeneratorCommand());
 
-        $this->app->singleton('infyom.rollback', function ($app) {
-            return new RollbackGeneratorCommand();
-        });
+        $this->app->singleton('infyom.rollback', fn($app) => new RollbackGeneratorCommand());
 
-        $this->app->singleton('infyom.publish.user', function ($app) {
-            return new PublishUserCommand();
-        });
+        $this->app->singleton('infyom.publish.user', fn($app) => new PublishUserCommand());
 
         $this->commands([
             'infyom.publish',

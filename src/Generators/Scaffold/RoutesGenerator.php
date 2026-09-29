@@ -7,9 +7,6 @@ use InfyOm\Generator\Common\CommandData;
 
 class RoutesGenerator
 {
-    /** @var CommandData */
-    private $commandData;
-
     /** @var string */
     private $path;
 
@@ -19,10 +16,9 @@ class RoutesGenerator
     /** @var string */
     private $routesTemplate;
 
-    public function __construct(CommandData $commandData)
+    public function __construct(private readonly CommandData $commandData)
     {
-        $this->commandData = $commandData;
-        $this->path = $commandData->config->pathRoutes;
+        $this->path = $this->commandData->config->pathRoutes;
         $this->routeContents = file_get_contents($this->path);
         if (!empty($this->commandData->config->prefixes['route'])) {
             $this->routesTemplate = get_template('scaffold.routes.prefix_routes', 'laravel-generator');

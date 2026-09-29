@@ -11,9 +11,6 @@ use InfyOm\Generator\Utils\GeneratorFieldsInputUtil;
  */
 class FactoryGenerator extends BaseGenerator
 {
-    /** @var CommandData */
-    private $commandData;
-
     /** @var string */
     private $path;
 
@@ -23,10 +20,9 @@ class FactoryGenerator extends BaseGenerator
     /**
      * FactoryGenerator constructor.
      */
-    public function __construct(CommandData $commandData)
+    public function __construct(private readonly CommandData $commandData)
     {
-        $this->commandData = $commandData;
-        $this->path = $commandData->config->pathFactory;
+        $this->path = $this->commandData->config->pathFactory;
         $this->fileName = $this->commandData->modelName . 'Factory.php';
     }
 
@@ -72,34 +68,16 @@ class FactoryGenerator extends BaseGenerator
 
             $fieldData = "'" . $field->name . "' => " . '$this->faker->';
 
-            switch ($field->fieldType) {
-                case 'integer':
-                case 'float':
-                    $fakerData = 'randomDigitNotNull';
-
-                    break;
-                case 'string':
-                    $fakerData = 'word';
-
-                    break;
-                case 'text':
-                    $fakerData = 'text';
-
-                    break;
-                case 'datetime':
-                case 'timestamp':
-                    $fakerData = "date('Y-m-d H:i:s')";
-
-                    break;
-                case 'enum':
-                    $fakerData = 'randomElement(' .
-                    GeneratorFieldsInputUtil::prepareValuesArrayStr($field->htmlValues) .
-                        ')';
-
-                    break;
-                default:
-                    $fakerData = 'word';
-            }
+            $fakerData = match ($field->fieldType) {
+                'integer', 'float' => 'randomDigitNotNull',
+                'string' => 'word',
+                'text' => 'text',
+                'datetime', 'timestamp' => "date('Y-m-d H:i:s')",
+                'enum' => 'randomElement(' .
+                GeneratorFieldsInputUtil::prepareValuesArrayStr($field->htmlValues) .
+                    ')',
+                default => 'word',
+            };
 
             $fieldData .= $fakerData;
 

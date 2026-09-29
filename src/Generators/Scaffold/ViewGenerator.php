@@ -12,9 +12,6 @@ use InfyOm\Generator\Utils\HTMLFieldGenerator;
 
 class ViewGenerator extends BaseGenerator
 {
-    /** @var CommandData */
-    private $commandData;
-
     /** @var string */
     private $path;
 
@@ -24,10 +21,9 @@ class ViewGenerator extends BaseGenerator
     /** @var array */
     private $htmlFields;
 
-    public function __construct(CommandData $commandData)
+    public function __construct(private readonly CommandData $commandData)
     {
-        $this->commandData = $commandData;
-        $this->path = $commandData->config->pathViews;
+        $this->path = $this->commandData->config->pathViews;
         $this->templateType = config('infyom.laravel_generator.templates', 'adminlte-templates');
     }
 

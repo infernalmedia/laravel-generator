@@ -36,9 +36,6 @@ class GeneratorTable
 
 class TableFieldsGenerator
 {
-    /** @var string */
-    public $tableName;
-
     public $primaryKey;
 
     /** @var bool */
@@ -59,14 +56,12 @@ class TableFieldsGenerator
     /** @var GeneratorFieldRelation[] */
     public $relations;
 
-    /** @var array */
-    public $ignoredFields;
-
-    public function __construct($tableName, $ignoredFields, $connection = '')
+    /**
+     * @param string $tableName
+     * @param mixed[] $ignoredFields
+     */
+    public function __construct(public $tableName, public $ignoredFields, $connection = '')
     {
-        $this->tableName = $tableName;
-        $this->ignoredFields = $ignoredFields;
-
         if (!empty($connection)) {
             $this->schemaManager = DB::connection($connection)->getDoctrineSchemaManager();
         } else {
@@ -86,16 +81,16 @@ class TableFieldsGenerator
             $platform->registerDoctrineTypeMapping($dbType, $doctrineType);
         }
 
-        $columns = $this->schemaManager->listTableColumns($tableName);
+        $columns = $this->schemaManager->listTableColumns($this->tableName);
 
         $this->columns = [];
         foreach ($columns as $column) {
-            if (!in_array($column->getName(), $ignoredFields)) {
+            if (!in_array($column->getName(), $this->ignoredFields)) {
                 $this->columns[] = $column;
             }
         }
 
-        $this->primaryKey = $this->getPrimaryKeyOfTable($tableName);
+        $this->primaryKey = $this->getPrimaryKeyOfTable($this->tableName);
         $this->timestamps = static::getTimestampFieldNames();
         $this->defaultSearchable = config('infyom.laravel_generator.options.tables_searchable_default', false);
     }

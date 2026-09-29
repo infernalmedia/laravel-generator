@@ -8,9 +8,6 @@ use InfyOm\Generator\Utils\FileUtil;
 
 class TestTraitsGenerator extends BaseGenerator
 {
-    /** @var CommandData */
-    private $commandData;
-
     /** @var string */
     private $path;
 
@@ -24,9 +21,11 @@ class TestTraitsGenerator extends BaseGenerator
         'model_test_trait' => 'ModelTestTrait',
     ];
 
-    public function __construct($commandData)
+    /**
+     * @param CommandData $commandData
+     */
+    public function __construct(private $commandData)
     {
-        $this->commandData = $commandData;
         $this->path = config('infyom.laravel_generator.path.test_traits', base_path('tests/'));
     }
 

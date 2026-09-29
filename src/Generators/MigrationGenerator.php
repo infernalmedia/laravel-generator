@@ -10,15 +10,14 @@ use SplFileInfo;
 
 class MigrationGenerator extends BaseGenerator
 {
-    /** @var CommandData */
-    private $commandData;
-
     /** @var string */
     private $path;
 
-    public function __construct($commandData)
+    /**
+     * @param CommandData $commandData
+     */
+    public function __construct(private $commandData)
     {
-        $this->commandData = $commandData;
         $this->path = config('infyom.laravel_generator.path.migration', database_path('migrations/'));
     }
 

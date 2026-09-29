@@ -462,7 +462,7 @@ class GeneratorConfig
         $this->options['repositoryPattern'] = config('infyom.laravel_generator.options.repository_pattern', true);
         $this->options['resources'] = config('infyom.laravel_generator.options.resources', true);
         if (!empty($this->options['skip'])) {
-            $this->options['skip'] = array_map('trim', explode(',', $this->options['skip']));
+            $this->options['skip'] = array_map(trim(...), explode(',', $this->options['skip']));
         }
 
         if (!empty($this->options['datatables'])) {

@@ -100,7 +100,7 @@ if (!function_exists('get_templates_package_path')) {
      */
     function get_templates_package_path($templateType): string
     {
-        if (strpos($templateType, '/') === false) {
+        if (!str_contains($templateType, '/')) {
             $templateType = base_path('vendor/infyomlabs/') . $templateType;
         }
 
