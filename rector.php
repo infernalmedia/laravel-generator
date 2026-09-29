@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Rector\Config\RectorConfig;
 
 return RectorConfig::configure()
-    ->withPhpSets(php83: true)
+    ->withPhpSets(php85: true)
     ->withTypeCoverageLevel(20)
     ->withDeadCodeLevel(25)
     ->withCodeQualityLevel(19)
